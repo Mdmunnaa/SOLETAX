@@ -37,7 +37,7 @@
     <div class="table-responsive">
       <table class="table table-hover align-middle">
         <thead class="table-light">
-          <tr><th>#</th><th>Client</th><th>Description</th><th>Amount</th><th>Date</th><th>Status</th><th></th></tr>
+          <tr><th>#</th><th>Client</th><th>Description</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th></tr>
         </thead>
         <tbody>
           {% for inv in invoices %}
@@ -48,10 +48,13 @@
             <td><strong>£{{ inv.amount }}</strong></td>
             <td>{{ inv.date }}</td>
             <td><span class="{% if inv.status == 'Paid' %}badge-paid{% else %}badge-unpaid{% endif %}">{{ inv.status }}</span></td>
-            <td>
+            <td class="d-flex gap-1">
               {% if inv.status == 'Unpaid' %}
               <a href="{% url 'mark_paid' inv.pk %}" class="btn btn-sm btn-outline-success">Mark Paid</a>
               {% endif %}
+              <a href="{% url 'download_invoice_pdf' inv.pk %}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-download me-1"></i>PDF
+              </a>
             </td>
           </tr>
           {% endfor %}
