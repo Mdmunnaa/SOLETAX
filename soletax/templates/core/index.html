@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SoleTax - Simple Tax Tool for UK Freelancers</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; }
+    .hero { background: #1a1a2e; color: white; padding: 5rem 0; }
+    .hero h1 { font-size: 3rem; font-weight: 700; }
+    .hero span { color: #4cc9f0; }
+    .feature-card { border: none; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.07); height: 100%; }
+    .feature-icon { font-size: 2.5rem; color: #4cc9f0; }
+    .pricing-card { border: 2px solid #4cc9f0; border-radius: 16px; padding: 2.5rem; text-align: center; }
+    .price { font-size: 3rem; font-weight: 700; color: #1a1a2e; }
+    .btn-cta { background: #4cc9f0; color: #fff; border: none; padding: .8rem 2.5rem; border-radius: 8px; font-size: 1.1rem; font-weight: 600; }
+    .btn-cta:hover { background: #1a1a2e; color: #fff; }
+    footer { background: #1a1a2e; color: #ccc; padding: 2rem 0; }
+  </style>
+</head>
+<body>
+{% load static %}
+
+<nav class="navbar navbar-expand-lg px-4" style="background:#1a1a2e;">
+  <a class="navbar-brand text-white fw-bold fs-4" href="{% url 'index' %}">
+    <i class="bi bi-receipt-cutoff me-2" style="color:#4cc9f0;"></i>Sole<span style="color:#4cc9f0;">Tax</span>
+  </a>
+  <div class="ms-auto">
+    <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-light me-2">Login</a>
+    <a href="{% url 'dashboard' %}" class="btn btn-sm" style="background:#4cc9f0;color:#fff;">Get Started Free</a>
+  </div>
+</nav>
+
+<section class="hero text-center">
+  <div class="container">
+    <h1>Tax made <span>simple</span> for UK freelancers</h1>
+    <p class="lead mt-3 mb-4" style="color:#adb5bd;">Invoice clients, track expenses, and stay MTD-ready — all in one place.</p>
+    <a href="{% url 'dashboard' %}" class="btn btn-cta btn-lg">Start for Free <i class="bi bi-arrow-right ms-2"></i></a>
+    <p class="mt-3" style="color:#adb5bd;font-size:.9rem;">No credit card required</p>
+  </div>
+</section>
+
+<section class="py-5" style="background:#f8f9fa;">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-5">Everything a UK sole trader needs</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon mb-3"><i class="bi bi-file-earmark-text"></i></div>
+          <h5 class="fw-bold">Quick Invoicing</h5>
+          <p class="text-muted">Create professional invoices in 30 seconds and send as PDF.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon mb-3"><i class="bi bi-wallet2"></i></div>
+          <h5 class="fw-bold">Expense Tracking</h5>
+          <p class="text-muted">Log expenses by HMRC category. Always ready for tax time.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feature-icon mb-3"><i class="bi bi-bar-chart-line"></i></div>
+          <h5 class="fw-bold">MTD Tax Report</h5>
+          <p class="text-muted">Quarterly tax summary in HMRC format. Making Tax Digital ready.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-5">Simple pricing</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="pricing-card">
+          <p class="text-muted mb-1">Monthly</p>
+          <div class="price">£15<span style="font-size:1rem;font-weight:400;">/mo</span></div>
+          <hr>
+          <ul class="list-unstyled text-start mt-3">
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Unlimited invoices</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Expense tracking</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>MTD tax reports</li>
+            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>HMRC categories</li>
+          </ul>
+          <a href="{% url 'dashboard' %}" class="btn btn-cta w-100 mt-3">Get Started Free</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="text-center">
+  <div class="container">
+    <p class="mb-1"><strong style="color:#4cc9f0;">SoleTax</strong> — Built for UK freelancers</p>
+    <p style="font-size:.85rem;">Terms of Service · Privacy Policy · 30-day refund guarantee</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

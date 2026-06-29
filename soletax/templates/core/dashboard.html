@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<h4 class="fw-bold mb-4">Dashboard</h4>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="stat-card" style="background:#1a1a2e;">
+      <p class="mb-1" style="color:#adb5bd;font-size:.85rem;">Total Income</p>
+      <h3 class="fw-bold mb-0">£{{ total_income }}</h3>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card" style="background:#c0392b;">
+      <p class="mb-1" style="color:#fdd;font-size:.85rem;">Total Expenses</p>
+      <h3 class="fw-bold mb-0">£{{ total_expenses }}</h3>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card" style="background:#0f6e56;">
+      <p class="mb-1" style="color:#d1fae5;font-size:.85rem;">Net Profit</p>
+      <h3 class="fw-bold mb-0">£{{ profit }}</h3>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex gap-2 mb-4">
+  <a href="{% url 'create_invoice' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>New Invoice</a>
+  <a href="{% url 'add_expense' %}" class="btn btn-outline-secondary"><i class="bi bi-plus-lg me-1"></i>Add Expense</a>
+  <a href="{% url 'tax_report' %}" class="btn btn-outline-success"><i class="bi bi-bar-chart-line me-1"></i>Tax Report</a>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h6 class="fw-bold mb-3">Invoices</h6>
+    {% if invoices %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr><th>#</th><th>Client</th><th>Description</th><th>Amount</th><th>Date</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for inv in invoices %}
+          <tr>
+            <td>{{ inv.id }}</td>
+            <td><strong>{{ inv.client }}</strong></td>
+            <td>{{ inv.description }}</td>
+            <td><strong>£{{ inv.amount }}</strong></td>
+            <td>{{ inv.date }}</td>
+            <td><span class="{% if inv.status == 'Paid' %}badge-paid{% else %}badge-unpaid{% endif %}">{{ inv.status }}</span></td>
+            <td>
+              {% if inv.status == 'Unpaid' %}
+              <a href="{% url 'mark_paid' inv.pk %}" class="btn btn-sm btn-outline-success">Mark Paid</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="text-muted text-center py-3">No invoices yet. <a href="{% url 'create_invoice' %}">Create your first invoice</a></p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h6 class="fw-bold mb-3">Expenses</h6>
+    {% if expenses %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+          {% for exp in expenses %}
+          <tr>
+            <td>{{ exp.id }}</td>
+            <td>{{ exp.description }}</td>
+            <td><span class="badge bg-light text-dark">{{ exp.category }}</span></td>
+            <td><strong>£{{ exp.amount }}</strong></td>
+            <td>{{ exp.date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="text-muted text-center py-3">No expenses yet. <a href="{% url 'add_expense' %}">Add your first expense</a></p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-body p-4">
+        <h5 class="fw-bold mb-4"><i class="bi bi-file-earmark-text me-2" style="color:#4cc9f0;"></i>Create Invoice</h5>
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Client Name</label>
+            <input type="text" name="client" class="form-control" placeholder="e.g. John Smith" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Description of Work</label>
+            <textarea name="description" class="form-control" rows="3" placeholder="e.g. Website design for March 2024" required></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Amount (£)</label>
+            <div class="input-group">
+              <span class="input-group-text">£</span>
+              <input type="number" name="amount" class="form-control" placeholder="0.00" step="0.01" min="0" required>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4">Create Invoice</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
