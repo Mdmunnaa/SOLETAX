@@ -1,26 +1,106 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="mb-3"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Home</a></div>
-    <h2 class="fw-bold mb-2">Privacy Policy</h2>
-    <p class="text-muted mb-5">Last updated: 29 June 2026</p>
-    <div class="card p-4">
-      <h5 class="fw-bold mb-3">1. Information We Collect</h5>
-      <p class="text-muted" style="line-height:1.8;">We collect information you provide directly: name, email address, and financial data you enter (invoices, expenses). We also collect basic usage data to improve the Service.</p>
-      <h5 class="fw-bold mb-3 mt-4">2. How We Use Your Information</h5>
-      <p class="text-muted" style="line-height:1.8;">We use your data solely to provide the Service — generating invoices, tracking expenses, and producing tax reports. We do not sell, rent, or share your personal data with third parties for marketing purposes.</p>
-      <h5 class="fw-bold mb-3 mt-4">3. Data Security</h5>
-      <p class="text-muted" style="line-height:1.8;">Your data is encrypted in transit and at rest. We implement industry-standard security measures to protect your financial information from unauthorised access.</p>
-      <h5 class="fw-bold mb-3 mt-4">4. Data Retention</h5>
-      <p class="text-muted" style="line-height:1.8;">We retain your data for as long as your account is active. Upon account deletion, your data is permanently removed within 30 days.</p>
-      <h5 class="fw-bold mb-3 mt-4">5. Your Rights (GDPR)</h5>
-      <p class="text-muted" style="line-height:1.8;">Under GDPR, you have the right to access, correct, export, or delete your personal data at any time. Contact us at <a href="mailto:privacy@soletax.co.uk">privacy@soletax.co.uk</a> to exercise these rights.</p>
-      <h5 class="fw-bold mb-3 mt-4">6. Cookies</h5>
-      <p class="text-muted" style="line-height:1.8;">We use essential cookies only — for login sessions and security. We do not use tracking or advertising cookies.</p>
-      <h5 class="fw-bold mb-3 mt-4">7. Contact</h5>
-      <p class="text-muted" style="line-height:1.8;">Privacy questions: <a href="mailto:privacy@soletax.co.uk">privacy@soletax.co.uk</a></p>
+<div class="container" style="max-width:780px;">
+
+  <a href="{% url 'index' %}" class="d-inline-flex align-items-center gap-2 mb-4 text-decoration-none" style="color:#64748b;font-size:.875rem;font-weight:500;">
+    <i class="bi bi-arrow-left"></i> Back to Home
+  </a>
+
+  <div class="mb-4">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background:#f0fdf4;border:1px solid #a7f3d0;font-size:.78rem;font-weight:700;color:#047857;letter-spacing:.06em;text-transform:uppercase;">
+      <i class="bi bi-shield-fill-check"></i> Legal
+    </div>
+    <h1 style="font-size:2.2rem;font-weight:900;letter-spacing:-.04em;color:#0f172a;margin-bottom:.3rem;">Privacy Policy</h1>
+    <p style="color:#94a3b8;font-size:.85rem;">Last updated: 29 June 2026</p>
+  </div>
+
+  <div class="card p-4 p-md-5" style="border-radius:20px;">
+    {% for section in sections %}{% endfor %}
+
+    <div class="policy-section mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#2563eb;">1</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Information We Collect</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">We collect information you provide directly: name, email address, and financial data you enter (invoices, expenses). We also collect basic usage data to improve the Service.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-section mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#2563eb;">2</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">How We Use Your Information</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">We use your data solely to provide the Service — generating invoices, tracking expenses, and producing tax reports. We do not sell, rent, or share your personal data with third parties for marketing purposes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-section mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#2563eb;">3</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Data Security</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">Your data is encrypted in transit and at rest. We implement industry-standard security measures to protect your financial information from unauthorised access.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-section mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#2563eb;">4</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Data Retention</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">We retain your data for as long as your account is active. Upon account deletion, your data is permanently removed within 30 days.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-section mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#2563eb;">5</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Your Rights (GDPR)</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">Under GDPR, you have the right to access, correct, export, or delete your personal data at any time. Contact us at <a href="mailto:privacy@soletax.co.uk" style="color:#2563eb;">privacy@soletax.co.uk</a> to exercise these rights.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-section mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#2563eb;">6</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Cookies</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">We use essential cookies only — for login sessions and security. We do not use tracking or advertising cookies.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="policy-section">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#2563eb;">7</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Contact</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">Privacy questions: <a href="mailto:privacy@soletax.co.uk" style="color:#2563eb;">privacy@soletax.co.uk</a></p>
+        </div>
+      </div>
     </div>
   </div>
+
 </div>
 {% endblock %}

@@ -1,59 +1,83 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-7">
-    <div class="mb-3"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Home</a></div>
-    <h2 class="fw-bold mb-2">Contact Us</h2>
-    <p class="text-muted mb-5">We'd love to hear from you. We usually respond within 24 hours.</p>
-    <div class="row g-4 mb-5">
-      <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <i class="bi bi-envelope-fill text-primary mb-2" style="font-size:1.5rem;"></i>
-          <h6 class="fw-bold mb-1">Email Us</h6>
-          <a href="mailto:support@soletax.co.uk" class="text-muted" style="font-size:.85rem;">support@soletax.co.uk</a>
+<div class="container" style="max-width:780px;">
+
+  <a href="{% url 'index' %}" class="d-inline-flex align-items-center gap-2 mb-4 text-decoration-none" style="color:#64748b;font-size:.875rem;font-weight:500;">
+    <i class="bi bi-arrow-left"></i> Back to Home
+  </a>
+
+  <div class="text-center mb-5">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background:#f0fdf4;border:1px solid #a7f3d0;font-size:.78rem;font-weight:700;color:#047857;letter-spacing:.06em;text-transform:uppercase;">
+      <i class="bi bi-chat-dots-fill"></i> Get in Touch
+    </div>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;letter-spacing:-.04em;color:#0f172a;margin-bottom:.6rem;">
+      We'd love to hear from you
+    </h1>
+    <p style="font-size:.95rem;color:#64748b;margin:0;">Usually respond within 24 hours on weekdays.</p>
+  </div>
+
+  <!-- Info cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card p-3 text-center h-100" style="border-radius:16px;">
+        <div style="width:44px;height:44px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto .85rem;">
+          <i class="bi bi-envelope-fill" style="color:#2563eb;font-size:1.2rem;"></i>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <i class="bi bi-chat-dots-fill text-primary mb-2" style="font-size:1.5rem;"></i>
-          <h6 class="fw-bold mb-1">Response Time</h6>
-          <p class="text-muted mb-0" style="font-size:.85rem;">Within 24 hours</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <i class="bi bi-clock-fill text-primary mb-2" style="font-size:1.5rem;"></i>
-          <h6 class="fw-bold mb-1">Support Hours</h6>
-          <p class="text-muted mb-0" style="font-size:.85rem;">Mon–Fri, 9am–6pm GMT</p>
-        </div>
+        <h6 style="font-weight:700;font-size:.88rem;margin-bottom:.3rem;">Email</h6>
+        <a href="mailto:support@soletax.co.uk" style="color:#64748b;font-size:.82rem;text-decoration:none;">support@soletax.co.uk</a>
       </div>
     </div>
-    <div class="card p-4">
-      <h5 class="fw-bold mb-4">Send us a message</h5>
-      <div class="mb-3">
-        <label class="form-label fw-semibold" style="font-size:.88rem;">Your Name</label>
-        <input type="text" class="form-control" placeholder="John Smith">
+    <div class="col-md-4">
+      <div class="card p-3 text-center h-100" style="border-radius:16px;">
+        <div style="width:44px;height:44px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto .85rem;">
+          <i class="bi bi-clock-fill" style="color:#059669;font-size:1.2rem;"></i>
+        </div>
+        <h6 style="font-weight:700;font-size:.88rem;margin-bottom:.3rem;">Response Time</h6>
+        <p style="color:#64748b;font-size:.82rem;margin:0;">Within 24 hours</p>
       </div>
-      <div class="mb-3">
-        <label class="form-label fw-semibold" style="font-size:.88rem;">Email Address</label>
-        <input type="email" class="form-control" placeholder="john@example.com">
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 text-center h-100" style="border-radius:16px;">
+        <div style="width:44px;height:44px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto .85rem;">
+          <i class="bi bi-calendar3" style="color:#d97706;font-size:1.2rem;"></i>
+        </div>
+        <h6 style="font-weight:700;font-size:.88rem;margin-bottom:.3rem;">Support Hours</h6>
+        <p style="color:#64748b;font-size:.82rem;margin:0;">Mon–Fri, 9am–6pm GMT</p>
       </div>
-      <div class="mb-3">
-        <label class="form-label fw-semibold" style="font-size:.88rem;">Subject</label>
-        <select class="form-select">
-          <option>General question</option>
-          <option>Billing issue</option>
-          <option>Technical support</option>
-          <option>Feature request</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="mb-4">
-        <label class="form-label fw-semibold" style="font-size:.88rem;">Message</label>
-        <textarea class="form-control" rows="4" placeholder="Tell us how we can help..."></textarea>
-      </div>
-      <button class="btn btn-blue px-4">Send Message</button>
     </div>
   </div>
+
+  <!-- Contact form -->
+  <div class="card p-4 p-md-5" style="border-radius:20px;">
+    <h5 style="font-weight:800;font-size:1.05rem;margin-bottom:1.5rem;letter-spacing:-.02em;">Send us a message</h5>
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-control" placeholder="John Smith">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-control" placeholder="john@example.com">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Subject</label>
+      <select class="form-select">
+        <option>General question</option>
+        <option>Billing issue</option>
+        <option>Technical support</option>
+        <option>Feature request</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="form-label">Message</label>
+      <textarea class="form-control" rows="4" placeholder="Tell us how we can help..."></textarea>
+    </div>
+    <button class="btn btn-blue px-5 py-2" style="font-size:.9rem;">
+      <i class="bi bi-send-fill me-2"></i>Send Message
+    </button>
+  </div>
+
 </div>
 {% endblock %}

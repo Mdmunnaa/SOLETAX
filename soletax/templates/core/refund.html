@@ -1,25 +1,79 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="mb-3"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Home</a></div>
-    <h2 class="fw-bold mb-2">Refund Policy</h2>
-    <p class="text-muted mb-5">Last updated: 29 June 2026</p>
-    <div class="card p-4">
-      <div class="text-center p-4 mb-4" style="background:#f0fdf4;border-radius:12px;">
-        <i class="bi bi-arrow-counterclockwise text-success" style="font-size:2rem;"></i>
-        <h4 class="fw-bold mt-2 text-success">30-Day Money Back Guarantee</h4>
-        <p class="text-muted mb-0">Not satisfied? Get a full refund within 30 days — no questions asked.</p>
-      </div>
-      <h5 class="fw-bold mb-3">How to Request a Refund</h5>
-      <p class="text-muted" style="line-height:1.8;">Email us at <a href="mailto:billing@soletax.co.uk">billing@soletax.co.uk</a> within 30 days of your payment. Include your account email and we'll process your refund within 5 business days.</p>
-      <h5 class="fw-bold mb-3 mt-4">Eligibility</h5>
-      <p class="text-muted" style="line-height:1.8;">Refunds are available within 30 days of initial payment for Pro subscriptions. Subsequent monthly charges are non-refundable but you may cancel at any time to avoid future charges.</p>
-      <h5 class="fw-bold mb-3 mt-4">Cancellation</h5>
-      <p class="text-muted" style="line-height:1.8;">Cancel your subscription anytime from your account settings. Access continues until the end of the billing period. No cancellation fees.</p>
-      <h5 class="fw-bold mb-3 mt-4">Contact</h5>
-      <p class="text-muted" style="line-height:1.8;">Billing questions: <a href="mailto:billing@soletax.co.uk">billing@soletax.co.uk</a></p>
+<div class="container" style="max-width:780px;">
+
+  <a href="{% url 'index' %}" class="d-inline-flex align-items-center gap-2 mb-4 text-decoration-none" style="color:#64748b;font-size:.875rem;font-weight:500;">
+    <i class="bi bi-arrow-left"></i> Back to Home
+  </a>
+
+  <div class="mb-4">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background:#f0fdf4;border:1px solid #a7f3d0;font-size:.78rem;font-weight:700;color:#047857;letter-spacing:.06em;text-transform:uppercase;">
+      <i class="bi bi-arrow-counterclockwise"></i> Refund Policy
     </div>
+    <h1 style="font-size:2.2rem;font-weight:900;letter-spacing:-.04em;color:#0f172a;margin-bottom:.3rem;">Refund Policy</h1>
+    <p style="color:#94a3b8;font-size:.85rem;">Last updated: 29 June 2026</p>
   </div>
+
+  <!-- Guarantee badge -->
+  <div class="card mb-4 p-4 text-center" style="border-radius:20px;background:linear-gradient(135deg,#0a1628,#0f2040);border-color:#1e3a5f;">
+    <div style="width:64px;height:64px;background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(5,150,105,.3));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+      <i class="bi bi-shield-fill-check" style="color:#10b981;font-size:1.75rem;"></i>
+    </div>
+    <h3 style="font-weight:900;color:#f1f5f9;font-size:1.5rem;margin-bottom:.4rem;letter-spacing:-.03em;">30-Day Money Back Guarantee</h3>
+    <p style="color:#8ba3c7;margin:0;font-size:.9rem;">Not satisfied? Get a full refund within 30 days — no questions asked.</p>
+  </div>
+
+  <div class="card p-4 p-md-5" style="border-radius:20px;">
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:38px;height:38px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <i class="bi bi-envelope-fill" style="color:#059669;font-size:.95rem;"></i>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">How to Request a Refund</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">Email us at <a href="mailto:billing@soletax.co.uk" style="color:#2563eb;">billing@soletax.co.uk</a> within 30 days of your payment. Include your account email and we'll process your refund within 5 business days.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:38px;height:38px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <i class="bi bi-check-circle-fill" style="color:#059669;font-size:.95rem;"></i>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Eligibility</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">Refunds are available within 30 days of initial payment for Pro subscriptions. Subsequent monthly charges are non-refundable, but you may cancel at any time to avoid future charges.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:38px;height:38px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <i class="bi bi-x-circle-fill" style="color:#059669;font-size:.95rem;"></i>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Cancellation</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">Cancel your subscription anytime from your account settings. Access continues until the end of the billing period. No cancellation fees — ever.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="d-flex align-items-start gap-3">
+        <div style="width:38px;height:38px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+          <i class="bi bi-chat-fill" style="color:#059669;font-size:.95rem;"></i>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Contact</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">Billing questions: <a href="mailto:billing@soletax.co.uk" style="color:#2563eb;">billing@soletax.co.uk</a></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
 {% endblock %}

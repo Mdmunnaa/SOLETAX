@@ -1,31 +1,33 @@
 {% extends 'core/base.html' %}
 {% block content %}
 
-<div class="d-flex align-items-center justify-content-between mb-4">
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
   <div>
-    <h4 class="fw-700 mb-0" style="font-size:1.4rem;font-weight:700;">Good day, {{ user.username }} 👋</h4>
-    <p class="text-muted mb-0" style="font-size:.88rem;">Here's your financial overview</p>
+    <h4>Good day, {{ user.username }} 👋</h4>
+    <p>Here's your financial overview for the current year</p>
   </div>
-  <a href="{% url 'create_invoice' %}" class="btn btn-blue px-4 d-none d-md-inline-block">+ New Invoice</a>
+  <a href="{% url 'create_invoice' %}" class="btn btn-blue px-4 d-none d-md-inline-flex align-items-center gap-2">
+    <i class="bi bi-plus-lg"></i> New Invoice
+  </a>
 </div>
 
 <!-- Stat Cards -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-4">
     <div class="stat-card stat-income">
-      <p class="s-label">Total Income</p>
+      <p class="s-label"><i class="bi bi-arrow-up-circle-fill me-1"></i>Total Income</p>
       <p class="s-value">£{{ total_income }}</p>
     </div>
   </div>
   <div class="col-6 col-md-4">
     <div class="stat-card stat-expense">
-      <p class="s-label">Total Expenses</p>
+      <p class="s-label"><i class="bi bi-arrow-down-circle-fill me-1"></i>Total Expenses</p>
       <p class="s-value">£{{ total_expenses }}</p>
     </div>
   </div>
   <div class="col-12 col-md-4">
     <div class="stat-card stat-profit">
-      <p class="s-label">Net Profit</p>
+      <p class="s-label"><i class="bi bi-graph-up-arrow me-1"></i>Net Profit</p>
       <p class="s-value">£{{ profit }}</p>
     </div>
   </div>
@@ -33,15 +35,21 @@
 
 <!-- Quick Actions -->
 <div class="d-flex gap-2 mb-4 flex-wrap">
-  <a href="{% url 'create_invoice' %}" class="btn btn-blue"><i class="bi bi-plus me-1"></i>New Invoice</a>
-  <a href="{% url 'add_expense' %}" class="btn btn-outline-blue"><i class="bi bi-plus me-1"></i>Add Expense</a>
-  <a href="{% url 'tax_report' %}" class="btn btn-outline-secondary"><i class="bi bi-bar-chart me-1"></i>Tax Report</a>
+  <a href="{% url 'create_invoice' %}" class="btn btn-blue">
+    <i class="bi bi-file-earmark-plus me-1"></i>New Invoice
+  </a>
+  <a href="{% url 'add_expense' %}" class="btn btn-outline-blue">
+    <i class="bi bi-plus-circle me-1"></i>Add Expense
+  </a>
+  <a href="{% url 'tax_report' %}" class="btn btn-outline-secondary" style="border-radius:10px;font-weight:600;font-size:.875rem;">
+    <i class="bi bi-bar-chart me-1"></i>Tax Report
+  </a>
 </div>
 
 <!-- Invoices Table -->
 <div class="card mb-4">
   <div class="card-title-bar">
-    <h6><i class="bi bi-file-earmark-text me-2 text-primary"></i>Invoices</h6>
+    <h6><i class="bi bi-file-earmark-text-fill me-2" style="color:#2563eb;"></i>Invoices</h6>
     <a href="{% url 'create_invoice' %}" class="btn btn-sm btn-blue">+ New</a>
   </div>
   {% if invoices %}
@@ -53,18 +61,20 @@
       <tbody>
         {% for inv in invoices %}
         <tr>
-          <td class="text-muted">{{ inv.id }}</td>
-          <td><strong>{{ inv.client }}</strong></td>
-          <td class="text-muted">{{ inv.description|truncatechars:35 }}</td>
-          <td><strong>£{{ inv.amount }}</strong></td>
-          <td class="text-muted">{{ inv.date }}</td>
+          <td style="color:#94a3b8;font-weight:600;font-size:.8rem;">#{{ inv.id }}</td>
+          <td><strong style="color:#0f172a;">{{ inv.client }}</strong></td>
+          <td style="color:#64748b;">{{ inv.description|truncatechars:35 }}</td>
+          <td><strong style="color:#0f172a;">£{{ inv.amount }}</strong></td>
+          <td style="color:#94a3b8;font-size:.85rem;">{{ inv.date }}</td>
           <td><span class="{% if inv.status == 'Paid' %}b-paid{% else %}b-unpaid{% endif %}">{{ inv.status }}</span></td>
           <td>
             <div class="d-flex gap-1 flex-wrap">
               {% if inv.status == 'Unpaid' %}
-              <a href="{% url 'mark_paid' inv.pk %}" class="btn btn-sm btn-outline-success" style="border-radius:8px;font-size:.78rem;">✓ Paid</a>
+              <a href="{% url 'mark_paid' inv.pk %}" class="btn btn-sm btn-outline-success" style="border-radius:8px;font-size:.75rem;font-weight:600;">✓ Paid</a>
               {% endif %}
-              <a href="{% url 'download_invoice_pdf' inv.pk %}" class="btn btn-sm btn-outline-blue" style="font-size:.78rem;"><i class="bi bi-download me-1"></i>PDF</a>
+              <a href="{% url 'download_invoice_pdf' inv.pk %}" class="btn btn-sm btn-outline-blue" style="font-size:.75rem;">
+                <i class="bi bi-download me-1"></i>PDF
+              </a>
             </div>
           </td>
         </tr>
@@ -73,14 +83,18 @@
     </table>
   </div>
   {% else %}
-  <div class="empty-state"><i class="bi bi-file-earmark-text"></i>No invoices yet.<br><a href="{% url 'create_invoice' %}">Create your first invoice →</a></div>
+  <div class="empty-state">
+    <i class="bi bi-file-earmark-text"></i>
+    No invoices yet.<br>
+    <a href="{% url 'create_invoice' %}" style="color:#2563eb;font-weight:600;font-size:.9rem;">Create your first invoice →</a>
+  </div>
   {% endif %}
 </div>
 
 <!-- Expenses Table -->
 <div class="card mb-5">
   <div class="card-title-bar">
-    <h6><i class="bi bi-wallet2 me-2 text-danger"></i>Expenses</h6>
+    <h6><i class="bi bi-wallet2-fill me-2" style="color:#ef4444;"></i>Expenses</h6>
     <a href="{% url 'add_expense' %}" class="btn btn-sm btn-outline-blue">+ Add</a>
   </div>
   {% if expenses %}
@@ -92,18 +106,26 @@
       <tbody>
         {% for exp in expenses %}
         <tr>
-          <td class="text-muted">{{ exp.id }}</td>
-          <td>{{ exp.description }}</td>
-          <td><span class="badge bg-light text-secondary border" style="font-weight:500;font-size:.75rem;">{{ exp.category }}</span></td>
-          <td><strong>£{{ exp.amount }}</strong></td>
-          <td class="text-muted">{{ exp.date }}</td>
+          <td style="color:#94a3b8;font-weight:600;font-size:.8rem;">#{{ exp.id }}</td>
+          <td style="color:#0f172a;">{{ exp.description }}</td>
+          <td>
+            <span style="background:#f1f5f9;color:#475569;border-radius:8px;padding:2px 10px;font-size:.75rem;font-weight:600;border:1px solid #e2e8f0;">
+              {{ exp.category }}
+            </span>
+          </td>
+          <td><strong style="color:#0f172a;">£{{ exp.amount }}</strong></td>
+          <td style="color:#94a3b8;font-size:.85rem;">{{ exp.date }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
   {% else %}
-  <div class="empty-state"><i class="bi bi-wallet2"></i>No expenses yet.<br><a href="{% url 'add_expense' %}">Add your first expense →</a></div>
+  <div class="empty-state">
+    <i class="bi bi-wallet2"></i>
+    No expenses yet.<br>
+    <a href="{% url 'add_expense' %}" style="color:#2563eb;font-weight:600;font-size:.9rem;">Add your first expense →</a>
+  </div>
   {% endif %}
 </div>
 

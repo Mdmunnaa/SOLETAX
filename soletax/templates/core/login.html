@@ -1,34 +1,39 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div class="row justify-content-center mt-3">
-  <div class="col-md-5 col-lg-4">
-    <div class="text-center mb-4">
-      <h2 class="fw-bold">Welcome back</h2>
-      <p class="text-muted">Login to your SoleTax account</p>
+<div class="container" style="max-width:440px;">
+  <div class="text-center mb-4 mt-2">
+    <div style="width:52px;height:52px;background:linear-gradient(135deg,#2563eb,#7c3aed);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 4px 20px rgba(37,99,235,.3);">
+      <i class="bi bi-lock-fill" style="color:#fff;font-size:1.25rem;"></i>
     </div>
-    <div class="card p-4">
-      <form method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="mb-3">
-          <label class="form-label fw-semibold" style="font-size:.88rem;">{{ field.label }}</label>
-          <input type="{{ field.field.widget.input_type }}"
-                 name="{{ field.html_name }}"
-                 class="form-control {% if field.errors %}is-invalid{% endif %}">
-          {% for error in field.errors %}
-          <div class="invalid-feedback">{{ error }}</div>
-          {% endfor %}
-        </div>
+    <h2 style="font-weight:900;font-size:1.75rem;letter-spacing:-.04em;color:#0f172a;margin-bottom:.35rem;">Welcome back</h2>
+    <p style="color:#64748b;font-size:.9rem;margin:0;">Login to your SoleTax account</p>
+  </div>
+
+  <div class="card p-4 p-md-5" style="border-radius:20px;">
+    <form method="POST">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        <input type="{{ field.field.widget.input_type }}"
+               name="{{ field.html_name }}"
+               class="form-control {% if field.errors %}is-invalid{% endif %}"
+               style="padding:.65rem .95rem;">
+        {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
         {% endfor %}
-        {% if form.non_field_errors %}
-        <div class="alert alert-danger py-2" style="font-size:.85rem;">{{ form.non_field_errors }}</div>
-        {% endif %}
-        <button type="submit" class="btn btn-blue w-100 py-2 mt-1">Login</button>
-      </form>
-      <p class="text-center mt-3 mb-0 text-muted" style="font-size:.85rem;">
-        No account? <a href="{% url 'signup' %}">Sign up free</a>
-      </p>
-    </div>
+      </div>
+      {% endfor %}
+      {% if form.non_field_errors %}
+      <div class="alert alert-danger py-2 mb-3" style="font-size:.85rem;">{{ form.non_field_errors }}</div>
+      {% endif %}
+      <button type="submit" class="btn btn-blue w-100 py-2 mt-1" style="font-size:.95rem;border-radius:12px;">
+        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+      </button>
+    </form>
+    <p class="text-center mt-3 mb-0" style="font-size:.85rem;color:#94a3b8;">
+      No account? <a href="{% url 'signup' %}" style="color:#2563eb;font-weight:600;">Sign up free</a>
+    </p>
   </div>
 </div>
 {% endblock %}

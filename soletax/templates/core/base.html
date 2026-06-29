@@ -4,92 +4,385 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SoleTax — Tax Tool for UK Freelancers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
-    body { background: #f5f7fa; font-family: 'Segoe UI', system-ui, sans-serif; color: #1e293b; }
+    :root {
+      --navy: #0a1628;
+      --navy-light: #0f2040;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --blue-glow: rgba(37,99,235,0.25);
+      --mint: #10b981;
+      --mint-light: #d1fae5;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --red-light: #fee2e2;
+      --surface: #f8faff;
+      --surface2: #f1f5f9;
+      --border: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --white: #ffffff;
+      --sidebar-w: 240px;
+      --nav-h: 60px;
+      --radius: 12px;
+      --radius-lg: 18px;
+    }
 
-    /* Navbar */
-    .top-nav { background: #fff; border-bottom: 1px solid #e8ecf0; padding: .75rem 1.5rem; position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; align-items: center; gap: 1rem; box-shadow: 0 1px 8px rgba(0,0,0,.06); }
-    .brand { font-weight: 800; font-size: 1.35rem; color: #1e293b; text-decoration: none; }
-    .brand span { color: #3b82f6; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--surface);
+      color: var(--text-primary);
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOP NAV ── */
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 1px 12px rgba(0,0,0,.06);
+    }
+
+    .brand {
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .brand .brand-sole { color: var(--navy); }
+    .brand .brand-tax {
+      color: var(--blue);
+      background: linear-gradient(135deg, var(--blue), #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-dot {
+      width: 7px; height: 7px;
+      background: var(--mint);
+      border-radius: 50%;
+      margin-left: 2px;
+      margin-bottom: 10px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
     .nav-actions { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
+    .nav-user-chip {
+      display: flex; align-items: center; gap: .45rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 999px; padding: .3rem .75rem .3rem .45rem;
+      font-size: .82rem; font-weight: 500; color: var(--text-secondary);
+    }
+    .nav-user-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), #7c3aed);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; font-weight: 800; color: #fff;
+    }
 
-    /* Sidebar */
-    .sidebar { width: 230px; background: #fff; border-right: 1px solid #e8ecf0; position: fixed; top: 57px; bottom: 0; left: 0; padding: 1.25rem .75rem; overflow-y: auto; }
-    .sidebar .sec-label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: .1em; padding: .5rem .75rem; margin-top: .5rem; }
-    .sidebar a { display: flex; align-items: center; gap: 10px; padding: .6rem .85rem; border-radius: 10px; color: #64748b; text-decoration: none; font-size: .88rem; font-weight: 500; margin-bottom: 2px; transition: all .15s; }
-    .sidebar a:hover { background: #eff6ff; color: #3b82f6; }
-    .sidebar a.active { background: #eff6ff; color: #3b82f6; font-weight: 600; }
-    .sidebar a i { font-size: 1rem; }
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--navy);
+      position: fixed;
+      top: var(--nav-h); bottom: 0; left: 0;
+      padding: 1.25rem .85rem;
+      overflow-y: auto;
+      z-index: 900;
+      display: flex;
+      flex-direction: column;
+    }
 
-    /* Main */
-    .main-wrap { margin-left: 230px; padding: calc(57px + 1.5rem) 1.5rem 2rem; min-height: 100vh; }
+    .sidebar-section-label {
+      font-size: .66rem;
+      font-weight: 700;
+      color: #3d5a8a;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      padding: .5rem .65rem;
+      margin-top: .75rem;
+    }
 
-    /* Cards */
-    .card { border: 1px solid #e8ecf0; border-radius: 14px; box-shadow: 0 1px 6px rgba(0,0,0,.04); background: #fff; }
-    .card-title-bar { padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
-    .card-title-bar h6 { margin: 0; font-weight: 600; color: #1e293b; font-size: .95rem; }
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .6rem .85rem;
+      border-radius: var(--radius);
+      color: #8ba3c7;
+      text-decoration: none;
+      font-size: .875rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+      transition: all .18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .sidebar a i { font-size: 1.05rem; flex-shrink: 0; }
+    .sidebar a:hover {
+      background: rgba(37,99,235,.12);
+      color: #a8c4e8;
+    }
+    .sidebar a.active {
+      background: linear-gradient(135deg, rgba(37,99,235,.3), rgba(124,58,237,.2));
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 0 0 1px rgba(37,99,235,.25) inset;
+    }
+    .sidebar a.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 20%; bottom: 20%;
+      width: 3px;
+      background: linear-gradient(180deg, var(--blue), #7c3aed);
+      border-radius: 0 3px 3px 0;
+    }
 
-    /* Stat cards */
-    .stat-card { border-radius: 14px; padding: 1.4rem 1.5rem; border: 1px solid; }
-    .stat-card .s-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .4rem; }
-    .stat-card .s-value { font-size: 1.9rem; font-weight: 700; line-height: 1; }
-    .stat-income { background: #f0fdf4; border-color: #bbf7d0; }
-    .stat-income .s-label { color: #15803d; }
-    .stat-income .s-value { color: #166534; }
-    .stat-expense { background: #fff1f2; border-color: #fecdd3; }
-    .stat-expense .s-label { color: #be123c; }
-    .stat-expense .s-value { color: #9f1239; }
-    .stat-profit { background: #eff6ff; border-color: #bfdbfe; }
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    /* ── MAIN WRAP ── */
+    .main-wrap {
+      margin-left: var(--sidebar-w);
+      padding: calc(var(--nav-h) + 1.75rem) 1.75rem 2.5rem;
+      min-height: 100vh;
+    }
+
+    /* public pages (no sidebar) */
+    .public-wrap {
+      padding: calc(var(--nav-h) + 2rem) 0 3rem;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 1px 8px rgba(0,0,0,.04);
+    }
+    .card-title-bar {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--surface2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-title-bar h6 {
+      margin: 0;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: .92rem;
+      letter-spacing: -.01em;
+    }
+
+    /* ── STAT CARDS ── */
+    .stat-card {
+      border-radius: var(--radius-lg);
+      padding: 1.35rem 1.5rem;
+      border: 1px solid;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: -30px; right: -20px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      opacity: .07;
+    }
+    .stat-card .s-label {
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: .4rem;
+    }
+    .stat-card .s-value {
+      font-size: 1.8rem; font-weight: 800;
+      line-height: 1; letter-spacing: -.03em;
+    }
+
+    .stat-income { background: linear-gradient(135deg,#f0fdf4,#dcfce7); border-color: #a7f3d0; }
+    .stat-income::after { background: #059669; }
+    .stat-income .s-label { color: #047857; }
+    .stat-income .s-value { color: #065f46; }
+
+    .stat-expense { background: linear-gradient(135deg,#fff1f2,#fee2e2); border-color: #fecaca; }
+    .stat-expense::after { background: #dc2626; }
+    .stat-expense .s-label { color: #b91c1c; }
+    .stat-expense .s-value { color: #991b1b; }
+
+    .stat-profit { background: linear-gradient(135deg,#eff6ff,#dbeafe); border-color: #bfdbfe; }
+    .stat-profit::after { background: #2563eb; }
     .stat-profit .s-label { color: #1d4ed8; }
     .stat-profit .s-value { color: #1e40af; }
-    .stat-tax { background: #fefce8; border-color: #fde68a; }
-    .stat-tax .s-label { color: #a16207; }
-    .stat-tax .s-value { color: #854d0e; }
 
-    /* Badges */
-    .b-paid { background: #dcfce7; color: #166534; border-radius: 20px; padding: 3px 12px; font-size: .78rem; font-weight: 600; }
-    .b-unpaid { background: #fee2e2; color: #991b1b; border-radius: 20px; padding: 3px 12px; font-size: .78rem; font-weight: 600; }
+    .stat-tax { background: linear-gradient(135deg,#fefce8,#fef3c7); border-color: #fde68a; }
+    .stat-tax::after { background: #d97706; }
+    .stat-tax .s-label { color: #92400e; }
+    .stat-tax .s-value { color: #78350f; }
 
-    /* Table */
-    .table th { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #94a3b8; border-bottom: 1px solid #f1f5f9; padding: .75rem 1rem; }
-    .table td { padding: .85rem 1rem; border-bottom: 1px solid #f8fafc; vertical-align: middle; font-size: .9rem; color: #334155; }
+    /* ── BADGES ── */
+    .b-paid {
+      background: #d1fae5; color: #065f46;
+      border-radius: 999px; padding: 3px 11px;
+      font-size: .75rem; font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .b-unpaid {
+      background: #fee2e2; color: #991b1b;
+      border-radius: 999px; padding: 3px 11px;
+      font-size: .75rem; font-weight: 700;
+    }
+
+    /* ── TABLES ── */
+    .table th {
+      font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--surface2);
+      padding: .7rem 1rem;
+      background: var(--surface);
+    }
+    .table td {
+      padding: .8rem 1rem;
+      border-bottom: 1px solid var(--surface2);
+      vertical-align: middle;
+      font-size: .875rem;
+      color: #334155;
+    }
     .table tr:last-child td { border-bottom: none; }
-    .table tr:hover td { background: #f8fafc; }
+    .table tr:hover td { background: #f8faff; }
 
-    /* Buttons */
-    .btn-blue { background: #3b82f6; color: #fff; border: none; border-radius: 9px; font-weight: 500; }
-    .btn-blue:hover { background: #2563eb; color: #fff; }
-    .btn-outline-blue { border: 1.5px solid #3b82f6; color: #3b82f6; border-radius: 9px; font-weight: 500; background: transparent; }
-    .btn-outline-blue:hover { background: #3b82f6; color: #fff; }
+    /* ── BUTTONS ── */
+    .btn-blue {
+      background: linear-gradient(135deg, var(--blue), #1d4ed8);
+      color: #fff; border: none;
+      border-radius: 10px; font-weight: 600;
+      font-size: .875rem;
+      box-shadow: 0 2px 12px rgba(37,99,235,.3);
+      transition: all .18s;
+    }
+    .btn-blue:hover {
+      background: linear-gradient(135deg, var(--blue-light), var(--blue));
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(37,99,235,.4);
+    }
+    .btn-outline-blue {
+      border: 1.5px solid var(--blue);
+      color: var(--blue);
+      border-radius: 10px; font-weight: 600;
+      font-size: .875rem;
+      background: transparent;
+      transition: all .18s;
+    }
+    .btn-outline-blue:hover {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(37,99,235,.3);
+    }
 
-    /* Empty state */
-    .empty-state { text-align: center; padding: 3rem 1rem; color: #94a3b8; }
-    .empty-state i { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
+    /* ── FORM CONTROLS ── */
+    .form-control, .form-select {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: .875rem;
+      color: var(--text-primary);
+      padding: .55rem .85rem;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+      outline: none;
+    }
+    .form-label { font-weight: 600; font-size: .82rem; color: var(--text-secondary); margin-bottom: .35rem; }
+    .input-group-text { border-radius: 10px 0 0 10px; border: 1.5px solid var(--border); font-weight: 600; }
 
-    /* Mobile */
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 3.5rem 1rem;
+      color: var(--text-muted);
+    }
+    .empty-state i { font-size: 2.5rem; display: block; margin-bottom: .75rem; opacity: .4; }
+
+    /* ── PAGE HEADER ── */
+    .page-header { margin-bottom: 1.75rem; }
+    .page-header h4 {
+      font-size: 1.45rem; font-weight: 800;
+      color: var(--text-primary); margin-bottom: .2rem;
+      letter-spacing: -.02em;
+    }
+    .page-header p { font-size: .875rem; color: var(--text-secondary); margin: 0; }
+
+    /* ── MOBILE NAV ── */
+    .mobile-nav {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--navy);
+      border-top: 1px solid rgba(255,255,255,.08);
+      z-index: 998; padding: .5rem 0 .75rem;
+    }
+    .mobile-nav a {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; font-size: .6rem; font-weight: 600;
+      color: #5b7fa8; text-decoration: none; gap: 3px;
+      padding: .2rem 0; letter-spacing: .02em; text-transform: uppercase;
+    }
+    .mobile-nav a i { font-size: 1.25rem; }
+    .mobile-nav a.active { color: var(--blue-light); }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .sidebar { display: none; }
-      .main-wrap { margin-left: 0; padding: calc(57px + 1rem) 1rem 2rem; }
-      .s-value { font-size: 1.5rem !important; }
+      .main-wrap {
+        margin-left: 0;
+        padding: calc(var(--nav-h) + 1rem) 1rem 5rem;
+      }
       .mobile-nav { display: flex !important; }
+      .s-value { font-size: 1.5rem !important; }
     }
-    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e8ecf0; z-index: 998; padding: .5rem 0; }
-    .mobile-nav a { flex: 1; display: flex; flex-direction: column; align-items: center; font-size: .65rem; color: #64748b; text-decoration: none; gap: 2px; padding: .25rem 0; }
-    .mobile-nav a i { font-size: 1.2rem; }
-    .mobile-nav a.active { color: #3b82f6; }
+
+    /* ── ALERT ── */
+    .alert-danger { border-radius: 10px; font-size: .85rem; border: 1.5px solid #fecaca; background: #fff1f2; color: #991b1b; }
   </style>
 </head>
 <body>
 
 <!-- Top Nav -->
 <nav class="top-nav">
-  <a href="{% url 'index' %}" class="brand">Sole<span>Tax</span></a>
+  <a href="{% url 'index' %}" class="brand">
+    <span class="brand-sole">Sole</span><span class="brand-tax">Tax</span><span class="brand-dot"></span>
+  </a>
   <div class="nav-actions">
     {% if user.is_authenticated %}
-      <span class="text-muted small d-none d-md-inline"><i class="bi bi-person-circle me-1"></i>{{ user.username }}</span>
+      <div class="nav-user-chip d-none d-md-flex">
+        <div class="nav-user-avatar">{{ user.username|first|upper }}</div>
+        {{ user.username }}
+      </div>
       <a href="{% url 'create_invoice' %}" class="btn btn-sm btn-outline-blue">+ Invoice</a>
       <a href="{% url 'add_expense' %}" class="btn btn-sm btn-blue">+ Expense</a>
       <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger">Logout</a>
@@ -103,24 +396,37 @@
 {% if user.is_authenticated %}
 <!-- Desktop Sidebar -->
 <div class="sidebar">
-  <p class="sec-label">Main</p>
-  <a href="{% url 'dashboard' %}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
-  <a href="{% url 'create_invoice' %}"><i class="bi bi-file-earmark-plus"></i> New Invoice</a>
-  <a href="{% url 'add_expense' %}"><i class="bi bi-plus-circle"></i> Add Expense</a>
-  <p class="sec-label">Reports</p>
-  <a href="{% url 'tax_report' %}"><i class="bi bi-bar-chart"></i> Tax Report</a>
+  <p class="sidebar-section-label">Main</p>
+  <a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}>
+    <i class="bi bi-grid-1x2-fill"></i> Dashboard
+  </a>
+  <a href="{% url 'create_invoice' %}" {% if request.resolver_match.url_name == 'create_invoice' %}class="active"{% endif %}>
+    <i class="bi bi-file-earmark-plus-fill"></i> New Invoice
+  </a>
+  <a href="{% url 'add_expense' %}" {% if request.resolver_match.url_name == 'add_expense' %}class="active"{% endif %}>
+    <i class="bi bi-plus-circle-fill"></i> Add Expense
+  </a>
+  <p class="sidebar-section-label">Reports</p>
+  <a href="{% url 'tax_report' %}" {% if request.resolver_match.url_name == 'tax_report' %}class="active"{% endif %}>
+    <i class="bi bi-bar-chart-fill"></i> Tax Report
+  </a>
+  <div class="sidebar-footer">
+    <a href="{% url 'logout' %}" style="color:#4a6080;">
+      <i class="bi bi-box-arrow-left"></i> Logout
+    </a>
+  </div>
 </div>
 
 <!-- Mobile Bottom Nav -->
 <nav class="mobile-nav">
-  <a href="{% url 'dashboard' %}"><i class="bi bi-grid-1x2"></i>Home</a>
-  <a href="{% url 'create_invoice' %}"><i class="bi bi-file-earmark-plus"></i>Invoice</a>
-  <a href="{% url 'add_expense' %}"><i class="bi bi-plus-circle"></i>Expense</a>
-  <a href="{% url 'tax_report' %}"><i class="bi bi-bar-chart"></i>Tax</a>
+  <a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}class="active"{% endif %}><i class="bi bi-grid-1x2-fill"></i>Home</a>
+  <a href="{% url 'create_invoice' %}" {% if request.resolver_match.url_name == 'create_invoice' %}class="active"{% endif %}><i class="bi bi-file-earmark-plus-fill"></i>Invoice</a>
+  <a href="{% url 'add_expense' %}" {% if request.resolver_match.url_name == 'add_expense' %}class="active"{% endif %}><i class="bi bi-plus-circle-fill"></i>Expense</a>
+  <a href="{% url 'tax_report' %}" {% if request.resolver_match.url_name == 'tax_report' %}class="active"{% endif %}><i class="bi bi-bar-chart-fill"></i>Tax</a>
 </nav>
 {% endif %}
 
-<div class="{% if user.is_authenticated %}main-wrap{% else %}container py-5 mt-4{% endif %}">
+<div class="{% if user.is_authenticated %}main-wrap{% else %}public-wrap{% endif %}">
   {% block content %}{% endblock %}
 </div>
 

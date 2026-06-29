@@ -1,28 +1,125 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="mb-3"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Home</a></div>
-    <h2 class="fw-bold mb-2">Terms of Service</h2>
-    <p class="text-muted mb-5">Last updated: 29 June 2026</p>
-    <div class="card p-4">
-      <h5 class="fw-bold mb-3">1. Acceptance of Terms</h5>
-      <p class="text-muted" style="line-height:1.8;">By accessing or using SoleTax ("the Service"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you may not use the Service.</p>
-      <h5 class="fw-bold mb-3 mt-4">2. Description of Service</h5>
-      <p class="text-muted" style="line-height:1.8;">SoleTax provides invoicing, expense tracking, and tax reporting tools for UK sole traders. The Service is intended for personal and business use by sole traders in the United Kingdom.</p>
-      <h5 class="fw-bold mb-3 mt-4">3. User Accounts</h5>
-      <p class="text-muted" style="line-height:1.8;">You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorised use of your account.</p>
-      <h5 class="fw-bold mb-3 mt-4">4. Acceptable Use</h5>
-      <p class="text-muted" style="line-height:1.8;">You agree not to misuse the Service, including but not limited to: submitting false financial data, attempting to breach security, or using the Service for illegal purposes.</p>
-      <h5 class="fw-bold mb-3 mt-4">5. Financial Disclaimer</h5>
-      <p class="text-muted" style="line-height:1.8;">SoleTax provides tools to help manage financial records but does not constitute professional financial or tax advice. For complex tax situations, please consult a qualified accountant.</p>
-      <h5 class="fw-bold mb-3 mt-4">6. Limitation of Liability</h5>
-      <p class="text-muted" style="line-height:1.8;">SoleTax shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Service. Our total liability shall not exceed the amount paid by you in the 12 months preceding the claim.</p>
-      <h5 class="fw-bold mb-3 mt-4">7. Changes to Terms</h5>
-      <p class="text-muted" style="line-height:1.8;">We reserve the right to modify these terms at any time. We will notify users of significant changes via email. Continued use of the Service constitutes acceptance of the revised terms.</p>
-      <h5 class="fw-bold mb-3 mt-4">8. Contact</h5>
-      <p class="text-muted" style="line-height:1.8;">For questions about these Terms, contact us at: <a href="mailto:legal@soletax.co.uk">legal@soletax.co.uk</a></p>
+<div class="container" style="max-width:780px;">
+
+  <a href="{% url 'index' %}" class="d-inline-flex align-items-center gap-2 mb-4 text-decoration-none" style="color:#64748b;font-size:.875rem;font-weight:500;">
+    <i class="bi bi-arrow-left"></i> Back to Home
+  </a>
+
+  <div class="mb-4">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background:#fefce8;border:1px solid #fde68a;font-size:.78rem;font-weight:700;color:#92400e;letter-spacing:.06em;text-transform:uppercase;">
+      <i class="bi bi-file-text-fill"></i> Legal
     </div>
+    <h1 style="font-size:2.2rem;font-weight:900;letter-spacing:-.04em;color:#0f172a;margin-bottom:.3rem;">Terms of Service</h1>
+    <p style="color:#94a3b8;font-size:.85rem;">Last updated: 29 June 2026</p>
   </div>
+
+  <div class="card p-4 p-md-5" style="border-radius:20px;">
+
+    {% for item in policy_items %}{% endfor %}
+
+    {% for num, title, body in "1,Acceptance of Terms,By accessing or using SoleTax (\"the Service\"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you may not use the Service.|2,Description of Service,SoleTax provides invoicing, expense tracking, and tax reporting tools for UK sole traders. The Service is intended for personal and business use by sole traders in the United Kingdom.|3,User Accounts,You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorised use of your account.|4,Acceptable Use,You agree not to misuse the Service, including but not limited to: submitting false financial data, attempting to breach security, or using the Service for illegal purposes.|5,Financial Disclaimer,SoleTax provides tools to help manage financial records but does not constitute professional financial or tax advice. For complex tax situations, please consult a qualified accountant.|6,Limitation of Liability,SoleTax shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Service.|7,Changes to Terms,We reserve the right to modify these terms at any time. We will notify users of significant changes via email. Continued use of the Service constitutes acceptance of the revised terms.|8,Contact,For questions about these Terms, contact us at: legal@soletax.co.uk".split|slice %}{% endfor %}
+
+    {% with sections="1,Acceptance of Terms;2,Description of Service;3,User Accounts;4,Acceptable Use;5,Financial Disclaimer;6,Limitation of Liability;7,Changes to Terms;8,Contact" %}
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#d97706;">1</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Acceptance of Terms</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">By accessing or using SoleTax ("the Service"), you agree to be bound by these Terms. If you do not agree with any part of these terms, you may not use the Service.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#d97706;">2</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Description of Service</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">SoleTax provides invoicing, expense tracking, and tax reporting tools for UK sole traders. The Service is intended for personal and business use by sole traders in the United Kingdom.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#d97706;">3</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">User Accounts</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorised use of your account.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#d97706;">4</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Acceptable Use</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">You agree not to misuse the Service, including but not limited to: submitting false financial data, attempting to breach security, or using the Service for illegal purposes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#d97706;">5</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Financial Disclaimer</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">SoleTax provides tools to help manage financial records but does not constitute professional financial or tax advice. For complex tax situations, please consult a qualified accountant.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#d97706;">6</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Limitation of Liability</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">SoleTax shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Service. Our total liability shall not exceed the amount paid by you in the 12 months preceding the claim.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4 pb-4" style="border-bottom:1px solid #f1f5f9;">
+      <div class="d-flex align-items-start gap-3">
+        <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#d97706;">7</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Changes to Terms</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">We reserve the right to modify these terms at any time. We will notify users of significant changes via email. Continued use of the Service constitutes acceptance of the revised terms.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="d-flex align-items-start gap-3">
+        <div style="min-width:32px;height:32px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-top:2px;">
+          <span style="font-size:.7rem;font-weight:900;color:#d97706;">8</span>
+        </div>
+        <div>
+          <h5 style="font-weight:800;font-size:.95rem;color:#0f172a;margin-bottom:.6rem;">Contact</h5>
+          <p style="color:#64748b;line-height:1.8;font-size:.875rem;margin:0;">For questions about these Terms, contact us at: <a href="mailto:legal@soletax.co.uk" style="color:#2563eb;">legal@soletax.co.uk</a></p>
+        </div>
+      </div>
+    </div>
+
+    {% endwith %}
+  </div>
+
 </div>
 {% endblock %}

@@ -1,32 +1,44 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div class="row justify-content-center mt-3">
-  <div class="col-md-5 col-lg-4">
-    <div class="text-center mb-4">
-      <h2 class="fw-bold">Create account</h2>
-      <p class="text-muted">Free to start. No credit card needed.</p>
+<div class="container" style="max-width:440px;">
+  <div class="text-center mb-4 mt-2">
+    <div style="width:52px;height:52px;background:linear-gradient(135deg,#10b981,#059669);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 4px 20px rgba(16,185,129,.3);">
+      <i class="bi bi-person-plus-fill" style="color:#fff;font-size:1.25rem;"></i>
     </div>
-    <div class="card p-4">
-      <form method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="mb-3">
-          <label class="form-label fw-semibold" style="font-size:.88rem;">{{ field.label }}</label>
-          <input type="{{ field.field.widget.input_type }}"
-                 name="{{ field.html_name }}"
-                 class="form-control {% if field.errors %}is-invalid{% endif %}"
-                 {% if field.value %}value="{{ field.value }}"{% endif %}>
-          {% for error in field.errors %}
-          <div class="invalid-feedback">{{ error }}</div>
-          {% endfor %}
-        </div>
+    <h2 style="font-weight:900;font-size:1.75rem;letter-spacing:-.04em;color:#0f172a;margin-bottom:.35rem;">Create account</h2>
+    <p style="color:#64748b;font-size:.9rem;margin:0;">Free to start. No credit card needed.</p>
+  </div>
+
+  <!-- Trust badges -->
+  <div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+    <span style="font-size:.75rem;color:#64748b;display:flex;align-items:center;gap:4px;"><i class="bi bi-shield-fill-check" style="color:#10b981;"></i> HMRC Ready</span>
+    <span style="font-size:.75rem;color:#64748b;display:flex;align-items:center;gap:4px;"><i class="bi bi-lock-fill" style="color:#2563eb;"></i> Encrypted</span>
+    <span style="font-size:.75rem;color:#64748b;display:flex;align-items:center;gap:4px;"><i class="bi bi-gift-fill" style="color:#7c3aed;"></i> Free Forever</span>
+  </div>
+
+  <div class="card p-4 p-md-5" style="border-radius:20px;">
+    <form method="POST">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        <input type="{{ field.field.widget.input_type }}"
+               name="{{ field.html_name }}"
+               class="form-control {% if field.errors %}is-invalid{% endif %}"
+               {% if field.value %}value="{{ field.value }}"{% endif %}
+               style="padding:.65rem .95rem;">
+        {% for error in field.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
         {% endfor %}
-        <button type="submit" class="btn btn-blue w-100 py-2 mt-1">Create Account</button>
-      </form>
-      <p class="text-center mt-3 mb-0 text-muted" style="font-size:.85rem;">
-        Already have an account? <a href="{% url 'login' %}">Login</a>
-      </p>
-    </div>
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-blue w-100 py-2 mt-1" style="font-size:.95rem;border-radius:12px;">
+        <i class="bi bi-rocket-takeoff-fill me-2"></i>Create Account — It's Free
+      </button>
+    </form>
+    <p class="text-center mt-3 mb-0" style="font-size:.85rem;color:#94a3b8;">
+      Already have an account? <a href="{% url 'login' %}" style="color:#2563eb;font-weight:600;">Login</a>
+    </p>
   </div>
 </div>
 {% endblock %}

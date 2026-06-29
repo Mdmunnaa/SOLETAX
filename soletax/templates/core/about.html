@@ -1,42 +1,85 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="mb-3"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Home</a></div>
-    <h2 class="fw-bold mb-2">About SoleTax</h2>
-    <p class="text-muted mb-5">Built for UK freelancers, by people who understand the struggle.</p>
-    <div class="card p-4 mb-4">
-      <h5 class="fw-bold mb-3">Our Story</h5>
-      <p class="text-muted" style="line-height:1.8;">SoleTax was born out of frustration. UK sole traders — plumbers, designers, photographers, writers — were spending hundreds of pounds every year on accountants just to file basic tax returns. Or worse, they were drowning in spreadsheets, losing receipts, and missing deadlines.</p>
-      <p class="text-muted mt-3" style="line-height:1.8;">We built SoleTax to fix that. A clean, simple tool that does the three things UK freelancers actually need: invoicing, expense tracking, and HMRC-compatible tax reports. Nothing more, nothing less.</p>
+<div class="container" style="max-width:900px;">
+
+  <!-- Back link -->
+  <a href="{% url 'index' %}" class="d-inline-flex align-items-center gap-2 mb-4 text-decoration-none" style="color:#64748b;font-size:.875rem;font-weight:500;">
+    <i class="bi bi-arrow-left"></i> Back to Home
+  </a>
+
+  <!-- Hero -->
+  <div class="text-center mb-5 pb-2">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background:#eff6ff;border:1px solid #bfdbfe;font-size:.78rem;font-weight:700;color:#2563eb;letter-spacing:.06em;text-transform:uppercase;">
+      <i class="bi bi-info-circle-fill"></i> About Us
     </div>
-    <div class="card p-4 mb-4">
-      <h5 class="fw-bold mb-3">Our Mission</h5>
-      <p class="text-muted" style="line-height:1.8;">To make tax compliance so simple that every UK sole trader can do it themselves — saving time, saving money, and staying stress-free.</p>
+    <h1 style="font-size:clamp(2rem,4vw,2.8rem);font-weight:900;letter-spacing:-.04em;color:#0f172a;margin-bottom:.75rem;line-height:1.15;">
+      Built for UK freelancers,<br>
+      <span style="background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">by people who get it.</span>
+    </h1>
+    <p style="font-size:1.05rem;color:#64748b;max-width:500px;margin:0 auto;line-height:1.75;">No jargon. No accountant needed. Just simple tools that actually work.</p>
+  </div>
+
+  <!-- Story & Mission cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-6">
+      <div class="card p-4 h-100" style="border-radius:18px;">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div style="width:42px;height:42px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="bi bi-book-fill" style="color:#2563eb;font-size:1.1rem;"></i>
+          </div>
+          <h5 style="font-weight:800;margin:0;font-size:1rem;letter-spacing:-.02em;">Our Story</h5>
+        </div>
+        <p style="color:#64748b;line-height:1.8;font-size:.9rem;margin:0;">SoleTax was born out of frustration. UK sole traders — plumbers, designers, photographers, writers — were spending hundreds of pounds every year on accountants just to file basic tax returns. Or worse, drowning in spreadsheets and missing deadlines.</p>
+        <p style="color:#64748b;line-height:1.8;font-size:.9rem;margin-top:.85rem;margin-bottom:0;">We built SoleTax to fix that. A clean, simple tool that does the three things UK freelancers actually need: invoicing, expense tracking, and HMRC-compatible tax reports.</p>
+      </div>
     </div>
-    <div class="row g-3 mb-4">
-      <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <h3 class="fw-bold text-primary mb-1">£0</h3>
-          <p class="text-muted mb-0" style="font-size:.85rem;">Cost to get started</p>
+    <div class="col-md-6">
+      <div class="card p-4 h-100" style="border-radius:18px;background:linear-gradient(135deg,#0a1628,#0f2040);border-color:#1e3a5f;">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div style="width:42px;height:42px;background:rgba(37,99,235,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <i class="bi bi-rocket-takeoff-fill" style="color:#60a5fa;font-size:1.1rem;"></i>
+          </div>
+          <h5 style="font-weight:800;margin:0;font-size:1rem;color:#f1f5f9;">Our Mission</h5>
+        </div>
+        <p style="color:#8ba3c7;line-height:1.8;font-size:.9rem;margin:0;">To make tax compliance so simple that every UK sole trader can do it themselves — saving time, saving money, and staying completely stress-free.</p>
+        <div class="mt-4 pt-3" style="border-top:1px solid rgba(255,255,255,.07);">
+          <p style="color:#10b981;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;margin:0;">
+            <i class="bi bi-check-circle-fill me-1"></i> HMRC MTD Compatible
+          </p>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <h3 class="fw-bold text-primary mb-1">MTD</h3>
-          <p class="text-muted mb-0" style="font-size:.85rem;">HMRC compatible</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <h3 class="fw-bold text-primary mb-1">30s</h3>
-          <p class="text-muted mb-0" style="font-size:.85rem;">To create an invoice</p>
-        </div>
-      </div>
-    </div>
-    <div class="text-center">
-      <a href="{% url 'signup' %}" class="btn btn-blue px-5 py-2">Start for Free</a>
     </div>
   </div>
+
+  <!-- Stats row -->
+  <div class="row g-3 mb-5">
+    <div class="col-4">
+      <div class="card p-3 text-center" style="border-radius:16px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#a7f3d0;">
+        <div style="font-size:2.2rem;font-weight:900;color:#065f46;line-height:1;letter-spacing:-.04em;">£0</div>
+        <p style="color:#047857;font-size:.78rem;font-weight:600;margin:4px 0 0;text-transform:uppercase;letter-spacing:.06em;">To get started</p>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card p-3 text-center" style="border-radius:16px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#bfdbfe;">
+        <div style="font-size:2.2rem;font-weight:900;color:#1e40af;line-height:1;letter-spacing:-.04em;">MTD</div>
+        <p style="color:#1d4ed8;font-size:.78rem;font-weight:600;margin:4px 0 0;text-transform:uppercase;letter-spacing:.06em;">HMRC Ready</p>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card p-3 text-center" style="border-radius:16px;background:linear-gradient(135deg,#fefce8,#fef3c7);border-color:#fde68a;">
+        <div style="font-size:2.2rem;font-weight:900;color:#78350f;line-height:1;letter-spacing:-.04em;">30s</div>
+        <p style="color:#92400e;font-size:.78rem;font-weight:600;margin:4px 0 0;text-transform:uppercase;letter-spacing:.06em;">Per Invoice</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="text-center pb-3">
+    <a href="{% url 'signup' %}" class="btn btn-blue px-5 py-3" style="font-size:1rem;border-radius:14px;">
+      Start for Free — No Card Required
+    </a>
+    <p style="color:#94a3b8;font-size:.8rem;margin-top:.75rem;">Join thousands of UK freelancers already using SoleTax</p>
+  </div>
+
 </div>
 {% endblock %}

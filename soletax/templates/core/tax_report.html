@@ -1,16 +1,17 @@
 {% extends 'core/base.html' %}
 {% block content %}
 
-<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
   <div>
-    <h4 class="fw-bold mb-0" style="font-size:1.4rem;">Tax Report</h4>
-    <p class="text-muted mb-0" style="font-size:.88rem;">HMRC MTD Summary — UK Sole Trader</p>
+    <h4>Tax Report</h4>
+    <p>HMRC MTD Summary — UK Sole Trader</p>
   </div>
   <a href="{% url 'download_tax_report_pdf' %}" class="btn btn-blue px-4">
     <i class="bi bi-download me-2"></i>Download PDF
   </a>
 </div>
 
+<!-- Stat Cards -->
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
     <div class="stat-card stat-income">
@@ -38,9 +39,16 @@
   </div>
 </div>
 
+<!-- HMRC note -->
+<div class="d-flex align-items-center gap-2 mb-4 px-3 py-2 rounded-3" style="background:#f0fdf4;border:1px solid #a7f3d0;font-size:.82rem;color:#047857;font-weight:500;">
+  <i class="bi bi-shield-fill-check"></i>
+  This report is formatted for HMRC Making Tax Digital (MTD) compliance.
+</div>
+
+<!-- Income Breakdown -->
 <div class="card mb-4">
   <div class="card-title-bar">
-    <h6><i class="bi bi-file-earmark-text me-2 text-primary"></i>Income Breakdown</h6>
+    <h6><i class="bi bi-file-earmark-text-fill me-2" style="color:#2563eb;"></i>Income Breakdown</h6>
   </div>
   {% if invoices %}
   <div class="table-responsive">
@@ -51,10 +59,10 @@
       <tbody>
         {% for inv in invoices %}
         <tr>
-          <td><strong>{{ inv.client }}</strong></td>
-          <td class="text-muted">{{ inv.description }}</td>
-          <td class="text-muted">{{ inv.date }}</td>
-          <td><strong>£{{ inv.amount }}</strong></td>
+          <td><strong style="color:#0f172a;">{{ inv.client }}</strong></td>
+          <td style="color:#64748b;">{{ inv.description }}</td>
+          <td style="color:#94a3b8;font-size:.85rem;">{{ inv.date }}</td>
+          <td><strong style="color:#0f172a;">£{{ inv.amount }}</strong></td>
           <td><span class="{% if inv.status == 'Paid' %}b-paid{% else %}b-unpaid{% endif %}">{{ inv.status }}</span></td>
         </tr>
         {% endfor %}
@@ -66,9 +74,10 @@
   {% endif %}
 </div>
 
+<!-- Expense Breakdown -->
 <div class="card mb-5">
   <div class="card-title-bar">
-    <h6><i class="bi bi-wallet2 me-2 text-danger"></i>Expense Breakdown</h6>
+    <h6><i class="bi bi-wallet2-fill me-2" style="color:#ef4444;"></i>Expense Breakdown</h6>
   </div>
   {% if expenses %}
   <div class="table-responsive">
@@ -79,10 +88,14 @@
       <tbody>
         {% for exp in expenses %}
         <tr>
-          <td>{{ exp.description }}</td>
-          <td><span class="badge bg-light text-secondary border" style="font-size:.75rem;">{{ exp.category }}</span></td>
-          <td class="text-muted">{{ exp.date }}</td>
-          <td><strong>£{{ exp.amount }}</strong></td>
+          <td style="color:#0f172a;">{{ exp.description }}</td>
+          <td>
+            <span style="background:#f1f5f9;color:#475569;border-radius:8px;padding:2px 10px;font-size:.75rem;font-weight:600;border:1px solid #e2e8f0;">
+              {{ exp.category }}
+            </span>
+          </td>
+          <td style="color:#94a3b8;font-size:.85rem;">{{ exp.date }}</td>
+          <td><strong style="color:#0f172a;">£{{ exp.amount }}</strong></td>
         </tr>
         {% endfor %}
       </tbody>
