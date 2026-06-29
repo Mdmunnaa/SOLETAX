@@ -355,3 +355,19 @@ def download_tax_report_pdf(request):
     p.showPage()
     p.save()
     return response
+
+
+def about(request):
+    return render(request, 'core/about.html')
+
+def contact(request):
+    return render(request, 'core/contact.html')
+
+def terms(request):
+    return render(request, 'core/terms.html')
+
+def privacy(request):
+    return render(request, 'core/privacy.html')
+
+def refund(request):
+    return render(request, 'core/refund.html')

@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="mb-3"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Home</a></div>
+    <h2 class="fw-bold mb-2">Privacy Policy</h2>
+    <p class="text-muted mb-5">Last updated: 29 June 2026</p>
+    <div class="card p-4">
+      <h5 class="fw-bold mb-3">1. Information We Collect</h5>
+      <p class="text-muted" style="line-height:1.8;">We collect information you provide directly: name, email address, and financial data you enter (invoices, expenses). We also collect basic usage data to improve the Service.</p>
+      <h5 class="fw-bold mb-3 mt-4">2. How We Use Your Information</h5>
+      <p class="text-muted" style="line-height:1.8;">We use your data solely to provide the Service — generating invoices, tracking expenses, and producing tax reports. We do not sell, rent, or share your personal data with third parties for marketing purposes.</p>
+      <h5 class="fw-bold mb-3 mt-4">3. Data Security</h5>
+      <p class="text-muted" style="line-height:1.8;">Your data is encrypted in transit and at rest. We implement industry-standard security measures to protect your financial information from unauthorised access.</p>
+      <h5 class="fw-bold mb-3 mt-4">4. Data Retention</h5>
+      <p class="text-muted" style="line-height:1.8;">We retain your data for as long as your account is active. Upon account deletion, your data is permanently removed within 30 days.</p>
+      <h5 class="fw-bold mb-3 mt-4">5. Your Rights (GDPR)</h5>
+      <p class="text-muted" style="line-height:1.8;">Under GDPR, you have the right to access, correct, export, or delete your personal data at any time. Contact us at <a href="mailto:privacy@soletax.co.uk">privacy@soletax.co.uk</a> to exercise these rights.</p>
+      <h5 class="fw-bold mb-3 mt-4">6. Cookies</h5>
+      <p class="text-muted" style="line-height:1.8;">We use essential cookies only — for login sessions and security. We do not use tracking or advertising cookies.</p>
+      <h5 class="fw-bold mb-3 mt-4">7. Contact</h5>
+      <p class="text-muted" style="line-height:1.8;">Privacy questions: <a href="mailto:privacy@soletax.co.uk">privacy@soletax.co.uk</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

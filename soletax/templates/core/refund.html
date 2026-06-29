@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="mb-3"><a href="{% url 'index' %}" class="text-muted text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Home</a></div>
+    <h2 class="fw-bold mb-2">Refund Policy</h2>
+    <p class="text-muted mb-5">Last updated: 29 June 2026</p>
+    <div class="card p-4">
+      <div class="text-center p-4 mb-4" style="background:#f0fdf4;border-radius:12px;">
+        <i class="bi bi-arrow-counterclockwise text-success" style="font-size:2rem;"></i>
+        <h4 class="fw-bold mt-2 text-success">30-Day Money Back Guarantee</h4>
+        <p class="text-muted mb-0">Not satisfied? Get a full refund within 30 days — no questions asked.</p>
+      </div>
+      <h5 class="fw-bold mb-3">How to Request a Refund</h5>
+      <p class="text-muted" style="line-height:1.8;">Email us at <a href="mailto:billing@soletax.co.uk">billing@soletax.co.uk</a> within 30 days of your payment. Include your account email and we'll process your refund within 5 business days.</p>
+      <h5 class="fw-bold mb-3 mt-4">Eligibility</h5>
+      <p class="text-muted" style="line-height:1.8;">Refunds are available within 30 days of initial payment for Pro subscriptions. Subsequent monthly charges are non-refundable but you may cancel at any time to avoid future charges.</p>
+      <h5 class="fw-bold mb-3 mt-4">Cancellation</h5>
+      <p class="text-muted" style="line-height:1.8;">Cancel your subscription anytime from your account settings. Access continues until the end of the billing period. No cancellation fees.</p>
+      <h5 class="fw-bold mb-3 mt-4">Contact</h5>
+      <p class="text-muted" style="line-height:1.8;">Billing questions: <a href="mailto:billing@soletax.co.uk">billing@soletax.co.uk</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

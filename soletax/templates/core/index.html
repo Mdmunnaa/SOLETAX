@@ -3,103 +3,460 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SoleTax - Simple Tax Tool for UK Freelancers</title>
+  <title>SoleTax — Simple Tax & Invoicing for UK Freelancers</title>
+  <meta name="description" content="The simplest way for UK sole traders to manage invoices, track expenses, and stay MTD-ready. No accountant needed.">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    body { font-family: 'Segoe UI', sans-serif; }
-    .hero { background: #1a1a2e; color: white; padding: 5rem 0; }
-    .hero h1 { font-size: 3rem; font-weight: 700; }
-    .hero span { color: #4cc9f0; }
-    .feature-card { border: none; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.07); height: 100%; }
-    .feature-icon { font-size: 2.5rem; color: #4cc9f0; }
-    .pricing-card { border: 2px solid #4cc9f0; border-radius: 16px; padding: 2.5rem; text-align: center; }
-    .price { font-size: 3rem; font-weight: 700; color: #1a1a2e; }
-    .btn-cta { background: #4cc9f0; color: #fff; border: none; padding: .8rem 2.5rem; border-radius: 8px; font-size: 1.1rem; font-weight: 600; }
-    .btn-cta:hover { background: #1a1a2e; color: #fff; }
-    footer { background: #1a1a2e; color: #ccc; padding: 2rem 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; color: #1e293b; background: #fff; }
+
+    /* NAV */
+    nav.top { position: fixed; top: 0; left: 0; right: 0; z-index: 999; background: rgba(255,255,255,.95); backdrop-filter: blur(12px); border-bottom: 1px solid #f1f5f9; padding: .9rem 2rem; display: flex; align-items: center; gap: 1rem; }
+    .brand { font-weight: 800; font-size: 1.4rem; color: #1e293b; text-decoration: none; }
+    .brand span { color: #3b82f6; }
+    .nav-links { display: flex; gap: 1.5rem; margin-left: 2rem; }
+    .nav-links a { color: #64748b; text-decoration: none; font-size: .9rem; font-weight: 500; }
+    .nav-links a:hover { color: #3b82f6; }
+    .nav-cta { margin-left: auto; display: flex; gap: .75rem; align-items: center; }
+    .btn-nav-login { color: #1e293b; font-weight: 500; text-decoration: none; font-size: .9rem; padding: .45rem 1.1rem; border-radius: 8px; border: 1.5px solid #e2e8f0; }
+    .btn-nav-login:hover { border-color: #3b82f6; color: #3b82f6; }
+    .btn-nav-signup { background: #3b82f6; color: #fff; font-weight: 600; text-decoration: none; font-size: .9rem; padding: .5rem 1.25rem; border-radius: 8px; }
+    .btn-nav-signup:hover { background: #2563eb; color: #fff; }
+
+    /* HERO */
+    .hero { padding: 8rem 0 5rem; background: linear-gradient(160deg, #f8faff 0%, #eff6ff 50%, #f0f9ff 100%); text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(59,130,246,.08) 0%, transparent 70%); }
+    .badge-pill { display: inline-flex; align-items: center; gap: .4rem; background: #eff6ff; color: #3b82f6; border: 1px solid #bfdbfe; border-radius: 20px; padding: .35rem 1rem; font-size: .8rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.15; color: #0f172a; margin-bottom: 1.25rem; }
+    .hero h1 span { color: #3b82f6; }
+    .hero p { font-size: 1.15rem; color: #64748b; max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; }
+    .btn-hero-primary { background: #3b82f6; color: #fff; font-weight: 700; text-decoration: none; padding: .85rem 2rem; border-radius: 10px; font-size: 1rem; transition: all .2s; box-shadow: 0 4px 20px rgba(59,130,246,.3); }
+    .btn-hero-primary:hover { background: #2563eb; color: #fff; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(59,130,246,.35); }
+    .btn-hero-secondary { background: #fff; color: #1e293b; font-weight: 600; text-decoration: none; padding: .85rem 2rem; border-radius: 10px; font-size: 1rem; border: 1.5px solid #e2e8f0; transition: all .2s; }
+    .btn-hero-secondary:hover { border-color: #3b82f6; color: #3b82f6; }
+    .hero-note { font-size: .82rem; color: #94a3b8; }
+
+    /* TRUST BAR */
+    .trust-bar { background: #fff; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 1.25rem 0; }
+    .trust-bar .inner { display: flex; align-items: center; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+    .trust-item { display: flex; align-items: center; gap: .5rem; color: #64748b; font-size: .85rem; font-weight: 500; }
+    .trust-item i { color: #3b82f6; font-size: 1rem; }
+
+    /* FEATURES */
+    .section { padding: 5rem 0; }
+    .section-label { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #3b82f6; margin-bottom: .5rem; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #0f172a; margin-bottom: .75rem; }
+    .section-sub { color: #64748b; font-size: 1rem; max-width: 520px; line-height: 1.7; }
+    .feature-card { background: #fff; border: 1px solid #e8ecf0; border-radius: 16px; padding: 2rem; height: 100%; transition: all .2s; }
+    .feature-card:hover { border-color: #bfdbfe; box-shadow: 0 8px 30px rgba(59,130,246,.1); transform: translateY(-2px); }
+    .feat-icon { width: 48px; height: 48px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .feat-icon i { font-size: 1.35rem; color: #3b82f6; }
+    .feature-card h5 { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: .4rem; }
+    .feature-card p { font-size: .88rem; color: #64748b; line-height: 1.65; margin: 0; }
+
+    /* HOW IT WORKS */
+    .how-bg { background: #f8fafc; }
+    .step-num { width: 36px; height: 36px; background: #3b82f6; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; flex-shrink: 0; }
+    .step-line { width: 2px; background: #e2e8f0; flex: 1; min-height: 30px; margin: 4px 0 4px 17px; }
+
+    /* PRICING */
+    .pricing-card { border: 2px solid #e2e8f0; border-radius: 20px; padding: 2.5rem; background: #fff; position: relative; }
+    .pricing-card.popular { border-color: #3b82f6; }
+    .popular-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #3b82f6; color: #fff; font-size: .75rem; font-weight: 700; padding: .3rem 1.2rem; border-radius: 20px; white-space: nowrap; }
+    .price-amount { font-size: 3rem; font-weight: 800; color: #0f172a; line-height: 1; }
+    .price-period { font-size: .9rem; color: #94a3b8; }
+    .price-feature { display: flex; align-items: center; gap: .6rem; font-size: .9rem; color: #334155; margin-bottom: .6rem; }
+    .price-feature i { color: #3b82f6; font-size: 1rem; flex-shrink: 0; }
+    .btn-pricing { display: block; text-align: center; background: #3b82f6; color: #fff; font-weight: 700; text-decoration: none; padding: .85rem; border-radius: 10px; margin-top: 1.75rem; font-size: .95rem; transition: all .2s; }
+    .btn-pricing:hover { background: #2563eb; color: #fff; }
+    .btn-pricing-outline { background: #fff; color: #1e293b; border: 2px solid #e2e8f0; }
+    .btn-pricing-outline:hover { border-color: #3b82f6; color: #3b82f6; background: #fff; }
+
+    /* TESTIMONIALS */
+    .testimonial-card { background: #fff; border: 1px solid #e8ecf0; border-radius: 16px; padding: 1.75rem; }
+    .stars { color: #f59e0b; font-size: .9rem; margin-bottom: .75rem; }
+    .testimonial-card p { font-size: .9rem; color: #334155; line-height: 1.7; margin-bottom: 1rem; font-style: italic; }
+    .reviewer { display: flex; align-items: center; gap: .75rem; }
+    .reviewer-avatar { width: 38px; height: 38px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #3b82f6; font-size: .9rem; }
+    .reviewer-name { font-weight: 600; font-size: .88rem; color: #0f172a; }
+    .reviewer-role { font-size: .78rem; color: #94a3b8; }
+
+    /* FAQ */
+    .faq-item { border: 1px solid #e8ecf0; border-radius: 12px; margin-bottom: .75rem; overflow: hidden; }
+    .faq-q { padding: 1.1rem 1.25rem; font-weight: 600; font-size: .92rem; color: #1e293b; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; }
+    .faq-q:hover { background: #f8fafc; }
+    .faq-a { padding: 0 1.25rem 1.1rem; font-size: .88rem; color: #64748b; line-height: 1.7; display: none; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform .2s; color: #94a3b8; }
+
+    /* CTA SECTION */
+    .cta-section { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 5rem 0; text-align: center; color: #fff; }
+    .cta-section h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 1rem; }
+    .cta-section p { font-size: 1.05rem; opacity: .85; margin-bottom: 2rem; }
+    .btn-cta-white { background: #fff; color: #1e40af; font-weight: 700; text-decoration: none; padding: .9rem 2.5rem; border-radius: 10px; font-size: 1rem; display: inline-block; transition: all .2s; }
+    .btn-cta-white:hover { background: #f0f9ff; color: #1e40af; transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer { background: #0f172a; color: #94a3b8; padding: 4rem 0 2rem; }
+    .footer-brand { font-size: 1.4rem; font-weight: 800; color: #fff; text-decoration: none; }
+    .footer-brand span { color: #3b82f6; }
+    .footer-tagline { font-size: .85rem; color: #64748b; margin-top: .4rem; }
+    footer h6 { color: #e2e8f0; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 1rem; }
+    footer a { color: #94a3b8; text-decoration: none; font-size: .88rem; display: block; margin-bottom: .5rem; line-height: 1.6; }
+    footer a:hover { color: #3b82f6; }
+    .footer-divider { border-color: #1e293b; margin: 2rem 0 1.5rem; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: .82rem; }
+    .footer-bottom-links { display: flex; gap: 1.5rem; }
+    .footer-bottom-links a { color: #64748b; text-decoration: none; font-size: .82rem; }
+    .footer-bottom-links a:hover { color: #3b82f6; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { padding: 6rem 0 3rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
   </style>
 </head>
 <body>
-{% load static %}
 
-<nav class="navbar navbar-expand-lg px-4" style="background:#1a1a2e;">
-  <a class="navbar-brand text-white fw-bold fs-4" href="{% url 'index' %}">
-    <i class="bi bi-receipt-cutoff me-2" style="color:#4cc9f0;"></i>Sole<span style="color:#4cc9f0;">Tax</span>
-  </a>
-  <div class="ms-auto">
-    <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-light me-2">Login</a>
-    <a href="{% url 'dashboard' %}" class="btn btn-sm" style="background:#4cc9f0;color:#fff;">Get Started Free</a>
+<!-- NAV -->
+<nav class="top">
+  <a href="/" class="brand">Sole<span>Tax</span></a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-cta">
+    <a href="{% url 'login' %}" class="btn-nav-login">Login</a>
+    <a href="{% url 'signup' %}" class="btn-nav-signup">Start Free →</a>
   </div>
 </nav>
 
-<section class="hero text-center">
+<!-- HERO -->
+<section class="hero">
   <div class="container">
-    <h1>Tax made <span>simple</span> for UK freelancers</h1>
-    <p class="lead mt-3 mb-4" style="color:#adb5bd;">Invoice clients, track expenses, and stay MTD-ready — all in one place.</p>
-    <a href="{% url 'dashboard' %}" class="btn btn-cta btn-lg">Start for Free <i class="bi bi-arrow-right ms-2"></i></a>
-    <p class="mt-3" style="color:#adb5bd;font-size:.9rem;">No credit card required</p>
+    <div class="badge-pill"><i class="bi bi-check-circle-fill"></i> MTD-Ready for UK Sole Traders</div>
+    <h1>Tax made <span>effortlessly simple</span><br>for UK freelancers</h1>
+    <p>Invoice clients in seconds, track expenses by HMRC category, and generate your quarterly tax report — all in one clean dashboard.</p>
+    <div class="hero-btns">
+      <a href="{% url 'signup' %}" class="btn-hero-primary">Start for Free — No card needed</a>
+      <a href="#features" class="btn-hero-secondary"><i class="bi bi-play-circle me-1"></i>See how it works</a>
+    </div>
+    <p class="hero-note"><i class="bi bi-shield-check me-1 text-success"></i>Free forever plan available · Cancel anytime · HMRC MTD compatible</p>
   </div>
 </section>
 
-<section class="py-5" style="background:#f8f9fa;">
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container inner">
+    <div class="trust-item"><i class="bi bi-people-fill"></i> Built for UK sole traders</div>
+    <div class="trust-item"><i class="bi bi-shield-check"></i> HMRC MTD compatible</div>
+    <div class="trust-item"><i class="bi bi-lock-fill"></i> Secure & encrypted data</div>
+    <div class="trust-item"><i class="bi bi-headset"></i> Email support included</div>
+    <div class="trust-item"><i class="bi bi-arrow-counterclockwise"></i> 30-day money back</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
   <div class="container">
-    <h2 class="text-center fw-bold mb-5">Everything a UK sole trader needs</h2>
+    <div class="text-center mb-5">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">Everything a sole trader needs</h2>
+      <p class="section-sub mx-auto">No accountant. No confusion. Just the three things UK freelancers actually need.</p>
+    </div>
     <div class="row g-4">
       <div class="col-md-4">
         <div class="feature-card">
-          <div class="feature-icon mb-3"><i class="bi bi-file-earmark-text"></i></div>
-          <h5 class="fw-bold">Quick Invoicing</h5>
-          <p class="text-muted">Create professional invoices in 30 seconds and send as PDF.</p>
+          <div class="feat-icon"><i class="bi bi-file-earmark-text"></i></div>
+          <h5>Quick Invoicing</h5>
+          <p>Create a professional invoice in under 30 seconds. Download as PDF and send directly to your client.</p>
         </div>
       </div>
       <div class="col-md-4">
         <div class="feature-card">
-          <div class="feature-icon mb-3"><i class="bi bi-wallet2"></i></div>
-          <h5 class="fw-bold">Expense Tracking</h5>
-          <p class="text-muted">Log expenses by HMRC category. Always ready for tax time.</p>
+          <div class="feat-icon"><i class="bi bi-wallet2"></i></div>
+          <h5>Expense Tracking</h5>
+          <p>Log business expenses using official HMRC categories. Stay organised and never miss a deduction at tax time.</p>
         </div>
       </div>
       <div class="col-md-4">
         <div class="feature-card">
-          <div class="feature-icon mb-3"><i class="bi bi-bar-chart-line"></i></div>
-          <h5 class="fw-bold">MTD Tax Report</h5>
-          <p class="text-muted">Quarterly tax summary in HMRC format. Making Tax Digital ready.</p>
+          <div class="feat-icon"><i class="bi bi-bar-chart-line"></i></div>
+          <h5>MTD Tax Report</h5>
+          <p>Get a quarterly summary in HMRC-compatible format. Know exactly what you owe before the deadline hits.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feat-icon"><i class="bi bi-download"></i></div>
+          <h5>PDF Downloads</h5>
+          <p>Download beautifully designed invoices and tax reports as PDFs. Professional-looking documents every time.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feat-icon"><i class="bi bi-phone"></i></div>
+          <h5>Mobile Friendly</h5>
+          <p>Works perfectly on any device. Log expenses on the go, right after a job — no laptop needed.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="feat-icon"><i class="bi bi-shield-check"></i></div>
+          <h5>Secure & Private</h5>
+          <p>Your financial data is encrypted and never sold. You own your data, always.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="py-5">
+<!-- HOW IT WORKS -->
+<section class="section how-bg" id="how">
   <div class="container">
-    <h2 class="text-center fw-bold mb-5">Simple pricing</h2>
+    <div class="text-center mb-5">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">Up and running in 3 steps</h2>
+    </div>
     <div class="row justify-content-center">
+      <div class="col-md-7">
+        <div class="d-flex gap-3 mb-2">
+          <div class="d-flex flex-column align-items-center">
+            <div class="step-num">1</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="pb-4">
+            <h6 class="fw-bold mb-1">Create your free account</h6>
+            <p class="text-muted" style="font-size:.9rem;">Sign up in seconds — no credit card required. Your account is ready instantly.</p>
+          </div>
+        </div>
+        <div class="d-flex gap-3 mb-2">
+          <div class="d-flex flex-column align-items-center">
+            <div class="step-num">2</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="pb-4">
+            <h6 class="fw-bold mb-1">Add your invoices & expenses</h6>
+            <p class="text-muted" style="font-size:.9rem;">Create invoices for clients and log business expenses using HMRC's official categories.</p>
+          </div>
+        </div>
+        <div class="d-flex gap-3">
+          <div class="step-num">3</div>
+          <div>
+            <h6 class="fw-bold mb-1">Download your tax report</h6>
+            <p class="text-muted" style="font-size:.9rem;">Get a quarterly HMRC-compatible tax summary. Know your profit, expenses, and estimated tax in one click.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <p class="section-label">Testimonials</p>
+      <h2 class="section-title">Loved by UK freelancers</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Finally a tax tool that doesn't feel like accounting software. SoleTax is clean, fast, and does exactly what I need."</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">JM</div>
+            <div>
+              <p class="reviewer-name">James M.</p>
+              <p class="reviewer-role">Freelance Web Designer, London</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"I used to pay my accountant £800/year just to file taxes. SoleTax replaced that for £12/month. Genuinely life-changing."</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">SR</div>
+            <div>
+              <p class="reviewer-name">Sarah R.</p>
+              <p class="reviewer-role">Freelance Photographer, Manchester</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"The MTD compliance was confusing until I found SoleTax. Now I just log expenses and download the report. So simple."</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">DK</div>
+            <div>
+              <p class="reviewer-name">David K.</p>
+              <p class="reviewer-role">Freelance Plumber, Birmingham</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section how-bg" id="pricing">
+  <div class="container">
+    <div class="text-center mb-5">
+      <p class="section-label">Pricing</p>
+      <h2 class="section-title">Simple, honest pricing</h2>
+      <p class="section-sub mx-auto">No hidden fees. No confusing tiers. Just one plan that covers everything.</p>
+    </div>
+    <div class="row justify-content-center g-4">
       <div class="col-md-4">
         <div class="pricing-card">
-          <p class="text-muted mb-1">Monthly</p>
-          <div class="price">£15<span style="font-size:1rem;font-weight:400;">/mo</span></div>
-          <hr>
-          <ul class="list-unstyled text-start mt-3">
-            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Unlimited invoices</li>
-            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Expense tracking</li>
-            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>MTD tax reports</li>
-            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>HMRC categories</li>
-          </ul>
-          <a href="{% url 'dashboard' %}" class="btn btn-cta w-100 mt-3">Get Started Free</a>
+          <h5 class="fw-bold mb-3">Free</h5>
+          <div class="d-flex align-items-end gap-1 mb-1">
+            <span class="price-amount">£0</span>
+          </div>
+          <p class="price-period text-muted mb-4">Forever free</p>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>5 invoices per month</div>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>10 expenses per month</div>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>Basic dashboard</div>
+          <div class="price-feature text-muted"><i class="bi bi-x-circle" style="color:#cbd5e1"></i>Tax report PDF</div>
+          <div class="price-feature text-muted"><i class="bi bi-x-circle" style="color:#cbd5e1"></i>Invoice PDF download</div>
+          <a href="{% url 'signup' %}" class="btn-pricing btn-pricing-outline">Get Started Free</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="pricing-card popular">
+          <div class="popular-badge">⭐ Most Popular</div>
+          <h5 class="fw-bold mb-3">Pro</h5>
+          <div class="d-flex align-items-end gap-1 mb-1">
+            <span class="price-amount">£12</span>
+            <span class="price-period mb-2">/month</span>
+          </div>
+          <p class="price-period text-muted mb-4">Billed monthly · Cancel anytime</p>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>Unlimited invoices</div>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>Unlimited expenses</div>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>Invoice PDF download</div>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>Quarterly tax report PDF</div>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>HMRC MTD compatible</div>
+          <div class="price-feature"><i class="bi bi-check-circle-fill"></i>Email support</div>
+          <a href="{% url 'signup' %}" class="btn-pricing">Start 14-Day Free Trial</a>
+        </div>
+      </div>
+    </div>
+    <p class="text-center text-muted mt-4" style="font-size:.85rem;"><i class="bi bi-arrow-counterclockwise me-1"></i>30-day money back guarantee · No questions asked</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="text-center mb-5">
+      <p class="section-label">FAQ</p>
+      <h2 class="section-title">Frequently asked questions</h2>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What is Making Tax Digital (MTD)? <i class="bi bi-plus faq-icon"></i></div>
+          <div class="faq-a">Making Tax Digital is HMRC's initiative requiring UK sole traders to keep digital records and submit tax updates quarterly. From April 2026, it becomes mandatory for sole traders earning over £50,000/year.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Do I need an accountant if I use SoleTax? <i class="bi bi-plus faq-icon"></i></div>
+          <div class="faq-a">Most sole traders won't need one for basic tax filing. SoleTax generates HMRC-compatible reports automatically. However, for complex situations (multiple income streams, VAT registration), we recommend consulting a professional.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Is my financial data safe? <i class="bi bi-plus faq-icon"></i></div>
+          <div class="faq-a">Absolutely. Your data is encrypted, stored securely, and never shared or sold to third parties. You can export or delete your data at any time.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Can I cancel my subscription anytime? <i class="bi bi-plus faq-icon"></i></div>
+          <div class="faq-a">Yes. Cancel anytime with no penalty. We also offer a 30-day money back guarantee — if you're not satisfied, we'll refund you, no questions asked.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Does SoleTax work for VAT-registered businesses? <i class="bi bi-plus faq-icon"></i></div>
+          <div class="faq-a">SoleTax is currently designed for non-VAT-registered UK sole traders. VAT support is on our roadmap for later this year.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<footer class="text-center">
+<!-- CTA -->
+<section class="cta-section">
   <div class="container">
-    <p class="mb-1"><strong style="color:#4cc9f0;">SoleTax</strong> — Built for UK freelancers</p>
-    <p style="font-size:.85rem;">Terms of Service · Privacy Policy · 30-day refund guarantee</p>
+    <h2>Ready to simplify your taxes?</h2>
+    <p>Join UK freelancers who've ditched spreadsheets and expensive accountants.</p>
+    <a href="{% url 'signup' %}" class="btn-cta-white">Start for Free — No card needed</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-md-4">
+        <a href="/" class="footer-brand">Sole<span>Tax</span></a>
+        <p class="footer-tagline">Simple tax & invoicing for UK freelancers. MTD-ready. No accountant needed.</p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="#" style="color:#64748b;font-size:1.2rem;"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" style="color:#64748b;font-size:1.2rem;"><i class="bi bi-linkedin"></i></a>
+          <a href="mailto:hello@soletax.co.uk" style="color:#64748b;font-size:1.2rem;"><i class="bi bi-envelope"></i></a>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <h6>Product</h6>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#how">How it works</a>
+        <a href="{% url 'signup' %}">Sign up free</a>
+      </div>
+      <div class="col-6 col-md-2">
+        <h6>Company</h6>
+        <a href="{% url 'about' %}">About Us</a>
+        <a href="{% url 'contact' %}">Contact</a>
+        <a href="#">Blog</a>
+      </div>
+      <div class="col-6 col-md-2">
+        <h6>Legal</h6>
+        <a href="{% url 'terms' %}">Terms of Service</a>
+        <a href="{% url 'privacy' %}">Privacy Policy</a>
+        <a href="{% url 'refund' %}">Refund Policy</a>
+      </div>
+      <div class="col-6 col-md-2">
+        <h6>Support</h6>
+        <a href="{% url 'contact' %}">Contact Us</a>
+        <a href="#faq">FAQ</a>
+        <a href="mailto:support@soletax.co.uk">support@soletax.co.uk</a>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+      <p>© 2026 SoleTax. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="{% url 'terms' %}">Terms</a>
+        <a href="{% url 'privacy' %}">Privacy</a>
+        <a href="{% url 'refund' %}">Refund</a>
+      </div>
+    </div>
   </div>
 </footer>
 
+<script>
+function toggleFaq(el) {
+  const item = el.parentElement;
+  item.classList.toggle('open');
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
