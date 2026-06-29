@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card p-4">
+      <h4 class="fw-bold mb-1 text-center">Create your account</h4>
+      <p class="text-muted text-center mb-4">Free to start. No credit card needed.</p>
+      <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label fw-semibold">{{ field.label }}</label>
+          <input type="{{ field.field.widget.input_type }}"
+                 name="{{ field.html_name }}"
+                 class="form-control {% if field.errors %}is-invalid{% endif %}"
+                 {% if field.value %}value="{{ field.value }}"{% endif %}>
+          {% for error in field.errors %}
+          <div class="invalid-feedback">{{ error }}</div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary w-100 py-2 mt-2">Create Account</button>
+      </form>
+      <p class="text-center mt-3 text-muted small">
+        Already have an account? <a href="{% url 'login' %}">Login</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

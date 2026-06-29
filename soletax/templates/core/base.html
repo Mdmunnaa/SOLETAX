@@ -11,6 +11,8 @@
     .navbar { background: #1a1a2e; }
     .navbar-brand { color: #fff !important; font-weight: 700; font-size: 1.4rem; }
     .navbar-brand span { color: #4cc9f0; }
+    .nav-link { color: #ccc !important; }
+    .nav-link:hover { color: #fff !important; }
     .card { border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
     .btn-primary { background: #1a1a2e; border: none; border-radius: 8px; }
     .btn-primary:hover { background: #4cc9f0; color: #fff; }
@@ -29,14 +31,22 @@
   <a class="navbar-brand" href="{% url 'index' %}">
     <i class="bi bi-receipt-cutoff me-2"></i>Sole<span>Tax</span>
   </a>
-  <div class="ms-auto d-flex gap-2">
-    <a href="{% url 'create_invoice' %}" class="btn btn-sm btn-outline-light">+ Invoice</a>
-    <a href="{% url 'add_expense' %}" class="btn btn-sm" style="background:#4cc9f0;color:#fff;">+ Expense</a>
+  <div class="ms-auto d-flex gap-2 align-items-center">
+    {% if user.is_authenticated %}
+      <span class="text-white-50 small me-2">Hi, {{ user.username }}</span>
+      <a href="{% url 'create_invoice' %}" class="btn btn-sm btn-outline-light">+ Invoice</a>
+      <a href="{% url 'add_expense' %}" class="btn btn-sm" style="background:#4cc9f0;color:#fff;">+ Expense</a>
+      <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger">Logout</a>
+    {% else %}
+      <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light">Login</a>
+      <a href="{% url 'signup' %}" class="btn btn-sm" style="background:#4cc9f0;color:#fff;">Sign Up Free</a>
+    {% endif %}
   </div>
 </nav>
 
 <div class="container-fluid">
   <div class="row">
+    {% if user.is_authenticated %}
     <div class="col-md-2 sidebar d-none d-md-block">
       <a href="{% url 'dashboard' %}" class="mt-3"><i class="bi bi-speedometer2"></i> Dashboard</a>
       <a href="{% url 'create_invoice' %}"><i class="bi bi-file-earmark-text"></i> Invoices</a>
@@ -44,6 +54,9 @@
       <a href="{% url 'tax_report' %}"><i class="bi bi-bar-chart-line"></i> Tax Report</a>
     </div>
     <div class="col-md-10 main-content">
+    {% else %}
+    <div class="col-12 main-content">
+    {% endif %}
       {% block content %}{% endblock %}
     </div>
   </div>

@@ -1,7 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Invoice(models.Model):
     STATUS_CHOICES = [('Unpaid', 'Unpaid'), ('Paid', 'Paid')]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     client = models.CharField(max_length=200)
     description = models.TextField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -28,6 +30,7 @@ class Expense(models.Model):
         ('Phone & internet', 'Phone & internet'),
         ('Other allowable expenses', 'Other allowable expenses'),
     ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
