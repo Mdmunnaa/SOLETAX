@@ -12,4 +12,5 @@ urlpatterns = [
     path('invoice/download/<int:pk>/', views.download_invoice_pdf, name='download_invoice_pdf'),
     path('expense/', views.add_expense, name='add_expense'),
     path('tax-report/', views.tax_report, name='tax_report'),
+    path('tax-report/download/', views.download_tax_report_pdf, name='download_tax_report_pdf'),
 ]

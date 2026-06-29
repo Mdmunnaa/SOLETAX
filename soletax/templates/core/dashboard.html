@@ -1,60 +1,66 @@
 {% extends 'core/base.html' %}
 {% block content %}
 
-<h4 class="fw-bold mb-4">Dashboard</h4>
+<h4 class="page-title"><i class="bi bi-speedometer2 me-2" style="color:#4cc9f0"></i>Dashboard</h4>
 
 <div class="row g-3 mb-4">
   <div class="col-md-4">
-    <div class="stat-card" style="background:#1a1a2e;">
-      <p class="mb-1" style="color:#adb5bd;font-size:.85rem;">Total Income</p>
-      <h3 class="fw-bold mb-0">£{{ total_income }}</h3>
+    <div class="stat-card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">
+      <p class="label">Total Income</p>
+      <p class="value">£{{ total_income }}</p>
+      <i class="bi bi-arrow-up-circle" style="position:absolute;right:20px;bottom:15px;font-size:2rem;opacity:.2;"></i>
     </div>
   </div>
   <div class="col-md-4">
-    <div class="stat-card" style="background:#c0392b;">
-      <p class="mb-1" style="color:#fdd;font-size:.85rem;">Total Expenses</p>
-      <h3 class="fw-bold mb-0">£{{ total_expenses }}</h3>
+    <div class="stat-card" style="background:linear-gradient(135deg,#c0392b,#e74c3c);">
+      <p class="label">Total Expenses</p>
+      <p class="value">£{{ total_expenses }}</p>
+      <i class="bi bi-arrow-down-circle" style="position:absolute;right:20px;bottom:15px;font-size:2rem;opacity:.2;"></i>
     </div>
   </div>
   <div class="col-md-4">
-    <div class="stat-card" style="background:#0f6e56;">
-      <p class="mb-1" style="color:#d1fae5;font-size:.85rem;">Net Profit</p>
-      <h3 class="fw-bold mb-0">£{{ profit }}</h3>
+    <div class="stat-card" style="background:linear-gradient(135deg,#0f6e56,#1d9e75);">
+      <p class="label">Net Profit</p>
+      <p class="value">£{{ profit }}</p>
+      <i class="bi bi-graph-up" style="position:absolute;right:20px;bottom:15px;font-size:2rem;opacity:.2;"></i>
     </div>
   </div>
 </div>
 
 <div class="d-flex gap-2 mb-4">
-  <a href="{% url 'create_invoice' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>New Invoice</a>
-  <a href="{% url 'add_expense' %}" class="btn btn-outline-secondary"><i class="bi bi-plus-lg me-1"></i>Add Expense</a>
-  <a href="{% url 'tax_report' %}" class="btn btn-outline-success"><i class="bi bi-bar-chart-line me-1"></i>Tax Report</a>
+  <a href="{% url 'create_invoice' %}" class="btn btn-primary px-4"><i class="bi bi-plus-lg me-1"></i>New Invoice</a>
+  <a href="{% url 'add_expense' %}" class="btn btn-outline-secondary px-4"><i class="bi bi-plus-lg me-1"></i>Add Expense</a>
+  <a href="{% url 'tax_report' %}" class="btn btn-outline-success px-4"><i class="bi bi-file-earmark-bar-graph me-1"></i>Tax Report</a>
 </div>
 
 <div class="card mb-4">
-  <div class="card-body">
-    <h6 class="fw-bold mb-3">Invoices</h6>
+  <div class="card-header-custom d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-file-earmark-text me-2"></i>Invoices</span>
+    <a href="{% url 'create_invoice' %}" class="btn btn-sm btn-accent">+ New</a>
+  </div>
+  <div class="card-body p-0">
     {% if invoices %}
     <div class="table-responsive">
-      <table class="table table-hover align-middle">
-        <thead class="table-light">
-          <tr><th>#</th><th>Client</th><th>Description</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th></tr>
-        </thead>
+      <table class="table mb-0">
+        <thead><tr class="px-3">
+          <th class="ps-4">#</th><th>Client</th><th>Description</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th>
+        </tr></thead>
         <tbody>
           {% for inv in invoices %}
           <tr>
-            <td>{{ inv.id }}</td>
+            <td class="ps-4 text-muted">{{ inv.id }}</td>
             <td><strong>{{ inv.client }}</strong></td>
-            <td>{{ inv.description }}</td>
+            <td class="text-muted">{{ inv.description|truncatechars:40 }}</td>
             <td><strong>£{{ inv.amount }}</strong></td>
-            <td>{{ inv.date }}</td>
+            <td class="text-muted">{{ inv.date }}</td>
             <td><span class="{% if inv.status == 'Paid' %}badge-paid{% else %}badge-unpaid{% endif %}">{{ inv.status }}</span></td>
-            <td class="d-flex gap-1">
-              {% if inv.status == 'Unpaid' %}
-              <a href="{% url 'mark_paid' inv.pk %}" class="btn btn-sm btn-outline-success">Mark Paid</a>
-              {% endif %}
-              <a href="{% url 'download_invoice_pdf' inv.pk %}" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-download me-1"></i>PDF
-              </a>
+            <td>
+              <div class="d-flex gap-1">
+                {% if inv.status == 'Unpaid' %}
+                <a href="{% url 'mark_paid' inv.pk %}" class="btn btn-sm btn-outline-success rounded-pill">✓ Paid</a>
+                {% endif %}
+                <a href="{% url 'download_invoice_pdf' inv.pk %}" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-download me-1"></i>PDF</a>
+              </div>
             </td>
           </tr>
           {% endfor %}
@@ -62,35 +68,44 @@
       </table>
     </div>
     {% else %}
-    <p class="text-muted text-center py-3">No invoices yet. <a href="{% url 'create_invoice' %}">Create your first invoice</a></p>
+    <div class="text-center py-5 text-muted">
+      <i class="bi bi-file-earmark-text" style="font-size:3rem;opacity:.3;"></i>
+      <p class="mt-2">No invoices yet. <a href="{% url 'create_invoice' %}">Create your first invoice</a></p>
+    </div>
     {% endif %}
   </div>
 </div>
 
 <div class="card">
-  <div class="card-body">
-    <h6 class="fw-bold mb-3">Expenses</h6>
+  <div class="card-header-custom d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-wallet2 me-2"></i>Expenses</span>
+    <a href="{% url 'add_expense' %}" class="btn btn-sm btn-accent">+ Add</a>
+  </div>
+  <div class="card-body p-0">
     {% if expenses %}
     <div class="table-responsive">
-      <table class="table table-hover align-middle">
-        <thead class="table-light">
-          <tr><th>#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th></tr>
-        </thead>
+      <table class="table mb-0">
+        <thead><tr>
+          <th class="ps-4">#</th><th>Description</th><th>Category</th><th>Amount</th><th>Date</th>
+        </tr></thead>
         <tbody>
           {% for exp in expenses %}
           <tr>
-            <td>{{ exp.id }}</td>
+            <td class="ps-4 text-muted">{{ exp.id }}</td>
             <td>{{ exp.description }}</td>
-            <td><span class="badge bg-light text-dark">{{ exp.category }}</span></td>
+            <td><span class="badge bg-light text-dark border">{{ exp.category }}</span></td>
             <td><strong>£{{ exp.amount }}</strong></td>
-            <td>{{ exp.date }}</td>
+            <td class="text-muted">{{ exp.date }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
     {% else %}
-    <p class="text-muted text-center py-3">No expenses yet. <a href="{% url 'add_expense' %}">Add your first expense</a></p>
+    <div class="text-center py-5 text-muted">
+      <i class="bi bi-wallet2" style="font-size:3rem;opacity:.3;"></i>
+      <p class="mt-2">No expenses yet. <a href="{% url 'add_expense' %}">Add your first expense</a></p>
+    </div>
     {% endif %}
   </div>
 </div>

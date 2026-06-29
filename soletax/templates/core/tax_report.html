@@ -2,89 +2,86 @@
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h4 class="fw-bold mb-0">Tax Report</h4>
-  <button onclick="window.print()" class="btn btn-outline-primary"><i class="bi bi-printer me-1"></i>Print Report</button>
+  <h4 class="page-title mb-0"><i class="bi bi-bar-chart-line me-2" style="color:#4cc9f0"></i>Tax Report</h4>
+  <a href="{% url 'download_tax_report_pdf' %}" class="btn btn-primary px-4">
+    <i class="bi bi-download me-2"></i>Download PDF
+  </a>
 </div>
 
-<div class="card mb-4">
-  <div class="card-body p-4">
-    <h6 class="text-muted mb-3">HMRC MTD Summary — Sole Trader</h6>
-    <div class="row g-3">
-      <div class="col-md-3">
-        <div class="p-3 rounded" style="background:#f0fdf4;">
-          <p class="text-muted mb-1" style="font-size:.8rem;">Total Income</p>
-          <h4 class="fw-bold text-success mb-0">£{{ total_income }}</h4>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-3 rounded" style="background:#fef2f2;">
-          <p class="text-muted mb-1" style="font-size:.8rem;">Total Expenses</p>
-          <h4 class="fw-bold text-danger mb-0">£{{ total_expenses }}</h4>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-3 rounded" style="background:#eff6ff;">
-          <p class="text-muted mb-1" style="font-size:.8rem;">Net Profit</p>
-          <h4 class="fw-bold text-primary mb-0">£{{ profit }}</h4>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-3 rounded" style="background:#fefce8;">
-          <p class="text-muted mb-1" style="font-size:.8rem;">Est. Tax (20%)</p>
-          <h4 class="fw-bold text-warning mb-0">£{{ tax_estimate }}</h4>
-        </div>
-      </div>
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="stat-card" style="background:linear-gradient(135deg,#0f6e56,#1d9e75);">
+      <p class="label">Total Income</p>
+      <p class="value">£{{ total_income }}</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card" style="background:linear-gradient(135deg,#c0392b,#e74c3c);">
+      <p class="label">Total Expenses</p>
+      <p class="value">£{{ total_expenses }}</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">
+      <p class="label">Net Profit</p>
+      <p class="value">£{{ profit }}</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card" style="background:linear-gradient(135deg,#b7860b,#d4a017);">
+      <p class="label">Est. Tax (20%)</p>
+      <p class="value">£{{ tax_estimate }}</p>
     </div>
   </div>
 </div>
 
 <div class="card mb-4">
-  <div class="card-body">
-    <h6 class="fw-bold mb-3">Income Breakdown</h6>
+  <div class="card-header-custom"><i class="bi bi-file-earmark-text me-2"></i>Income Breakdown</div>
+  <div class="card-body p-0">
     {% if invoices %}
-    <table class="table table-sm">
-      <thead class="table-light">
-        <tr><th>Client</th><th>Description</th><th>Date</th><th>Amount</th><th>Status</th></tr>
-      </thead>
+    <table class="table mb-0">
+      <thead><tr>
+        <th class="ps-4">Client</th><th>Description</th><th>Date</th><th>Amount</th><th>Status</th>
+      </tr></thead>
       <tbody>
         {% for inv in invoices %}
         <tr>
-          <td>{{ inv.client }}</td>
-          <td>{{ inv.description }}</td>
-          <td>{{ inv.date }}</td>
-          <td>£{{ inv.amount }}</td>
+          <td class="ps-4"><strong>{{ inv.client }}</strong></td>
+          <td class="text-muted">{{ inv.description }}</td>
+          <td class="text-muted">{{ inv.date }}</td>
+          <td><strong>£{{ inv.amount }}</strong></td>
           <td><span class="{% if inv.status == 'Paid' %}badge-paid{% else %}badge-unpaid{% endif %}">{{ inv.status }}</span></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     {% else %}
-    <p class="text-muted">No invoices recorded yet.</p>
+    <p class="text-muted text-center py-4">No income recorded.</p>
     {% endif %}
   </div>
 </div>
 
 <div class="card">
-  <div class="card-body">
-    <h6 class="fw-bold mb-3">Expense Breakdown</h6>
+  <div class="card-header-custom"><i class="bi bi-wallet2 me-2"></i>Expense Breakdown</div>
+  <div class="card-body p-0">
     {% if expenses %}
-    <table class="table table-sm">
-      <thead class="table-light">
-        <tr><th>Description</th><th>Category</th><th>Date</th><th>Amount</th></tr>
-      </thead>
+    <table class="table mb-0">
+      <thead><tr>
+        <th class="ps-4">Description</th><th>Category</th><th>Date</th><th>Amount</th>
+      </tr></thead>
       <tbody>
         {% for exp in expenses %}
         <tr>
-          <td>{{ exp.description }}</td>
-          <td><span class="badge bg-light text-dark">{{ exp.category }}</span></td>
-          <td>{{ exp.date }}</td>
-          <td>£{{ exp.amount }}</td>
+          <td class="ps-4">{{ exp.description }}</td>
+          <td><span class="badge bg-light text-dark border">{{ exp.category }}</span></td>
+          <td class="text-muted">{{ exp.date }}</td>
+          <td><strong>£{{ exp.amount }}</strong></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     {% else %}
-    <p class="text-muted">No expenses recorded yet.</p>
+    <p class="text-muted text-center py-4">No expenses recorded.</p>
     {% endif %}
   </div>
 </div>
