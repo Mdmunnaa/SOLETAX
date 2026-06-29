@@ -90,80 +90,117 @@ def download_invoice_pdf(request, pk):
     p = canvas.Canvas(response, pagesize=A4)
     w, h = A4
 
-    # Dark header bar
-    p.setFillColor(colors.HexColor('#1a1a2e'))
-    p.rect(0, h - 80*mm, w, 80*mm, fill=1, stroke=0)
+    # White background
+    p.setFillColor(colors.white)
+    p.rect(0, 0, w, h, fill=1, stroke=0)
+
+    # Top accent bar
+    p.setFillColor(colors.HexColor('#3b82f6'))
+    p.rect(0, h - 6*mm, w, 6*mm, fill=1, stroke=0)
+
+    # Header area
+    p.setFillColor(colors.HexColor('#f8fafc'))
+    p.rect(0, h - 50*mm, w, 44*mm, fill=1, stroke=0)
 
     # Brand
-    p.setFillColor(colors.HexColor('#4cc9f0'))
-    p.setFont("Helvetica-Bold", 32)
+    p.setFillColor(colors.HexColor('#1e293b'))
+    p.setFont("Helvetica-Bold", 26)
     p.drawString(15*mm, h - 28*mm, "SoleTax")
-    p.setFillColor(colors.white)
-    p.setFont("Helvetica", 11)
-    p.drawString(15*mm, h - 38*mm, "Tax Invoice · UK Sole Trader Tool")
-
-    # Invoice badge
-    p.setFillColor(colors.HexColor('#4cc9f0'))
-    p.roundRect(w - 75*mm, h - 38*mm, 60*mm, 18*mm, 4*mm, fill=1, stroke=0)
-    p.setFillColor(colors.HexColor('#1a1a2e'))
-    p.setFont("Helvetica-Bold", 13)
-    p.drawCentredString(w - 45*mm, h - 27*mm, f"INVOICE #{invoice.id:04d}")
-
-    # Info row below header
-    p.setFillColor(colors.HexColor('#f0f4ff'))
-    p.rect(0, h - 100*mm, w, 20*mm, fill=1, stroke=0)
-    p.setFillColor(colors.HexColor('#555'))
+    p.setFillColor(colors.HexColor('#3b82f6'))
     p.setFont("Helvetica", 10)
-    p.drawString(15*mm, h - 88*mm, f"Date: {invoice.date}")
-    p.drawString(70*mm, h - 88*mm, f"Status: {invoice.status}")
-    p.drawString(130*mm, h - 88*mm, f"Issued to: {invoice.client}")
+    p.drawString(15*mm, h - 36*mm, "Tax Invoice  ·  UK Sole Trader Tool")
 
-    # Bill To section
-    p.setFillColor(colors.HexColor('#1a1a2e'))
-    p.setFont("Helvetica-Bold", 10)
-    p.drawString(15*mm, h - 115*mm, "BILL TO")
-    p.setFillColor(colors.HexColor('#333'))
-    p.setFont("Helvetica-Bold", 14)
-    p.drawString(15*mm, h - 125*mm, invoice.client)
-
-    # Table header
-    p.setFillColor(colors.HexColor('#1a1a2e'))
-    p.rect(15*mm, h - 152*mm, w - 30*mm, 12*mm, fill=1, stroke=0)
+    # Invoice number badge
+    p.setFillColor(colors.HexColor('#3b82f6'))
+    p.roundRect(w - 65*mm, h - 40*mm, 50*mm, 20*mm, 3*mm, fill=1, stroke=0)
     p.setFillColor(colors.white)
-    p.setFont("Helvetica-Bold", 10)
-    p.drawString(20*mm, h - 145*mm, "DESCRIPTION")
-    p.drawRightString(w - 20*mm, h - 145*mm, "AMOUNT")
+    p.setFont("Helvetica-Bold", 9)
+    p.drawCentredString(w - 40*mm, h - 26*mm, "INVOICE")
+    p.setFont("Helvetica-Bold", 15)
+    p.drawCentredString(w - 40*mm, h - 36*mm, f"#{invoice.id:04d}")
 
-    # Table row
-    p.setFillColor(colors.HexColor('#f9f9f9'))
-    p.rect(15*mm, h - 172*mm, w - 30*mm, 18*mm, fill=1, stroke=0)
-    p.setFillColor(colors.HexColor('#333'))
+    # Divider line
+    p.setStrokeColor(colors.HexColor('#e2e8f0'))
+    p.setLineWidth(1)
+    p.line(15*mm, h - 52*mm, w - 15*mm, h - 52*mm)
+
+    # Two column info
+    p.setFillColor(colors.HexColor('#64748b'))
+    p.setFont("Helvetica-Bold", 8)
+    p.drawString(15*mm, h - 62*mm, "DATE")
+    p.drawString(70*mm, h - 62*mm, "STATUS")
+    p.drawString(130*mm, h - 62*mm, "ISSUED TO")
+
+    p.setFillColor(colors.HexColor('#1e293b'))
     p.setFont("Helvetica", 11)
-    desc = invoice.description[:65] + '...' if len(invoice.description) > 65 else invoice.description
-    p.drawString(20*mm, h - 162*mm, desc)
-    p.setFont("Helvetica-Bold", 11)
-    p.drawRightString(w - 20*mm, h - 162*mm, f"£{invoice.amount}")
+    p.drawString(15*mm, h - 71*mm, str(invoice.date))
+    status_color = colors.HexColor('#16a34a') if invoice.status == 'Paid' else colors.HexColor('#dc2626')
+    p.setFillColor(status_color)
+    p.drawString(70*mm, h - 71*mm, invoice.status)
+    p.setFillColor(colors.HexColor('#1e293b'))
+    p.drawString(130*mm, h - 71*mm, invoice.client)
+
+    # Bill To
+    p.setFillColor(colors.HexColor('#f8fafc'))
+    p.roundRect(15*mm, h - 100*mm, 80*mm, 22*mm, 3*mm, fill=1, stroke=0)
+    p.setFillColor(colors.HexColor('#64748b'))
+    p.setFont("Helvetica-Bold", 8)
+    p.drawString(20*mm, h - 85*mm, "BILL TO")
+    p.setFillColor(colors.HexColor('#1e293b'))
+    p.setFont("Helvetica-Bold", 13)
+    p.drawString(20*mm, h - 95*mm, invoice.client)
+
+    # Table
+    p.setFillColor(colors.HexColor('#1e293b'))
+    p.rect(15*mm, h - 122*mm, w - 30*mm, 10*mm, fill=1, stroke=0)
+    p.setFillColor(colors.white)
+    p.setFont("Helvetica-Bold", 9)
+    p.drawString(20*mm, h - 115*mm, "DESCRIPTION")
+    p.drawRightString(w - 20*mm, h - 115*mm, "AMOUNT")
+
+    # Row
+    p.setFillColor(colors.HexColor('#f8fafc'))
+    p.rect(15*mm, h - 140*mm, w - 30*mm, 17*mm, fill=1, stroke=0)
+    p.setStrokeColor(colors.HexColor('#e2e8f0'))
+    p.rect(15*mm, h - 140*mm, w - 30*mm, 17*mm, fill=0, stroke=1)
+    p.setFillColor(colors.HexColor('#334155'))
+    p.setFont("Helvetica", 10)
+    desc = invoice.description[:70] + '...' if len(invoice.description) > 70 else invoice.description
+    p.drawString(20*mm, h - 130*mm, desc)
+    p.setFont("Helvetica-Bold", 10)
+    p.drawRightString(w - 20*mm, h - 130*mm, f"£{invoice.amount}")
+
+    # Subtotal row
+    p.setFillColor(colors.HexColor('#f1f5f9'))
+    p.rect(15*mm, h - 150*mm, w - 30*mm, 9*mm, fill=1, stroke=0)
+    p.setFillColor(colors.HexColor('#64748b'))
+    p.setFont("Helvetica", 9)
+    p.drawRightString(w - 65*mm, h - 143*mm, "Subtotal:")
+    p.setFillColor(colors.HexColor('#1e293b'))
+    p.drawRightString(w - 20*mm, h - 143*mm, f"£{invoice.amount}")
 
     # Total box
-    p.setFillColor(colors.HexColor('#4cc9f0'))
-    p.roundRect(w - 75*mm, h - 200*mm, 60*mm, 22*mm, 3*mm, fill=1, stroke=0)
-    p.setFillColor(colors.HexColor('#1a1a2e'))
-    p.setFont("Helvetica-Bold", 10)
-    p.drawCentredString(w - 45*mm, h - 188*mm, "TOTAL DUE")
-    p.setFont("Helvetica-Bold", 18)
-    p.drawCentredString(w - 45*mm, h - 200*mm, f"£{invoice.amount}")
+    p.setFillColor(colors.HexColor('#3b82f6'))
+    p.roundRect(w - 75*mm, h - 175*mm, 60*mm, 20*mm, 3*mm, fill=1, stroke=0)
+    p.setFillColor(colors.white)
+    p.setFont("Helvetica-Bold", 9)
+    p.drawCentredString(w - 45*mm, h - 162*mm, "TOTAL DUE")
+    p.setFont("Helvetica-Bold", 17)
+    p.drawCentredString(w - 45*mm, h - 173*mm, f"£{invoice.amount}")
 
-    # Note
-    p.setFillColor(colors.HexColor('#888'))
+    # Thank you note
+    p.setFillColor(colors.HexColor('#94a3b8'))
     p.setFont("Helvetica", 9)
-    p.drawString(15*mm, h - 220*mm, "Thank you for your business. Please make payment within 30 days.")
+    p.drawString(15*mm, h - 190*mm, "Thank you for your business. Please make payment within 30 days.")
 
     # Footer
-    p.setFillColor(colors.HexColor('#1a1a2e'))
-    p.rect(0, 0, w, 18*mm, fill=1, stroke=0)
-    p.setFillColor(colors.HexColor('#aaa'))
+    p.setFillColor(colors.HexColor('#f8fafc'))
+    p.rect(0, 0, w, 20*mm, fill=1, stroke=0)
+    p.setStrokeColor(colors.HexColor('#e2e8f0'))
+    p.line(0, 20*mm, w, 20*mm)
+    p.setFillColor(colors.HexColor('#94a3b8'))
     p.setFont("Helvetica", 8)
-    p.drawCentredString(w/2, 8*mm, "Generated by SoleTax · soletax.pythonanywhere.com · Simple Tax Tool for UK Freelancers")
+    p.drawCentredString(w/2, 8*mm, "Generated by SoleTax  ·  soletax.pythonanywhere.com  ·  Simple Tax Tool for UK Freelancers")
 
     p.showPage()
     p.save()
@@ -216,87 +253,104 @@ def download_tax_report_pdf(request):
     p = canvas.Canvas(response, pagesize=A4)
     w, h = A4
 
-    # Header
-    p.setFillColor(colors.HexColor('#1a1a2e'))
-    p.rect(0, h - 70*mm, w, 70*mm, fill=1, stroke=0)
-    p.setFillColor(colors.HexColor('#4cc9f0'))
-    p.setFont("Helvetica-Bold", 28)
-    p.drawString(15*mm, h - 28*mm, "SoleTax")
+    # White bg
     p.setFillColor(colors.white)
-    p.setFont("Helvetica", 11)
-    p.drawString(15*mm, h - 38*mm, "HMRC MTD Tax Report · UK Sole Trader")
-    p.setFont("Helvetica", 10)
-    p.drawString(15*mm, h - 50*mm, f"Prepared for: {request.user.username}")
+    p.rect(0, 0, w, h, fill=1, stroke=0)
 
-    # Summary cards
-    card_y = h - 105*mm
-    card_w = 52*mm
-    cards = [
-        ('#0f6e56', 'TOTAL INCOME', f'£{total_income}'),
-        ('#c0392b', 'TOTAL EXPENSES', f'£{total_expenses}'),
-        ('#1a1a2e', 'NET PROFIT', f'£{profit}'),
-        ('#b7860b', 'EST. TAX (20%)', f'£{tax_estimate}'),
+    # Top bar
+    p.setFillColor(colors.HexColor('#3b82f6'))
+    p.rect(0, h - 6*mm, w, 6*mm, fill=1, stroke=0)
+
+    # Header
+    p.setFillColor(colors.HexColor('#f8fafc'))
+    p.rect(0, h - 48*mm, w, 42*mm, fill=1, stroke=0)
+    p.setFillColor(colors.HexColor('#1e293b'))
+    p.setFont("Helvetica-Bold", 24)
+    p.drawString(15*mm, h - 26*mm, "SoleTax")
+    p.setFillColor(colors.HexColor('#3b82f6'))
+    p.setFont("Helvetica", 10)
+    p.drawString(15*mm, h - 34*mm, "HMRC MTD Tax Report  ·  UK Sole Trader")
+    p.setFillColor(colors.HexColor('#94a3b8'))
+    p.setFont("Helvetica", 9)
+    p.drawString(15*mm, h - 42*mm, f"Prepared for: {request.user.username}")
+    p.setStrokeColor(colors.HexColor('#e2e8f0'))
+    p.line(15*mm, h - 50*mm, w - 15*mm, h - 50*mm)
+
+    # Summary cards (4 boxes)
+    box_w = (w - 30*mm - 9*mm) / 4
+    summaries = [
+        ('#f0fdf4', '#166534', '#15803d', 'TOTAL INCOME', f'£{total_income}'),
+        ('#fff1f2', '#9f1239', '#be123c', 'TOTAL EXPENSES', f'£{total_expenses}'),
+        ('#eff6ff', '#1e40af', '#1d4ed8', 'NET PROFIT', f'£{profit}'),
+        ('#fefce8', '#854d0e', '#a16207', 'EST. TAX (20%)', f'£{tax_estimate}'),
     ]
-    for i, (color, label, value) in enumerate(cards):
-        x = 15*mm + i * (card_w + 3*mm)
-        p.setFillColor(colors.HexColor(color))
-        p.roundRect(x, card_y, card_w, 22*mm, 3*mm, fill=1, stroke=0)
-        p.setFillColor(colors.white)
-        p.setFont("Helvetica-Bold", 8)
-        p.drawCentredString(x + card_w/2, card_y + 17*mm, label)
-        p.setFont("Helvetica-Bold", 14)
-        p.drawCentredString(x + card_w/2, card_y + 7*mm, value)
+    for i, (bg, val_color, lbl_color, label, value) in enumerate(summaries):
+        x = 15*mm + i * (box_w + 3*mm)
+        y = h - 80*mm
+        p.setFillColor(colors.HexColor(bg))
+        p.roundRect(x, y, box_w, 22*mm, 3*mm, fill=1, stroke=0)
+        p.setFillColor(colors.HexColor(lbl_color))
+        p.setFont("Helvetica-Bold", 7)
+        p.drawCentredString(x + box_w/2, y + 17*mm, label)
+        p.setFillColor(colors.HexColor(val_color))
+        p.setFont("Helvetica-Bold", 13)
+        p.drawCentredString(x + box_w/2, y + 7*mm, value)
 
     # Income table
-    y = h - 140*mm
-    p.setFillColor(colors.HexColor('#1a1a2e'))
-    p.rect(15*mm, y, w - 30*mm, 10*mm, fill=1, stroke=0)
+    y = h - 100*mm
+    p.setFillColor(colors.HexColor('#1e293b'))
+    p.rect(15*mm, y, w - 30*mm, 9*mm, fill=1, stroke=0)
     p.setFillColor(colors.white)
-    p.setFont("Helvetica-Bold", 10)
-    p.drawString(20*mm, y + 3*mm, "INCOME (Invoices)")
+    p.setFont("Helvetica-Bold", 8)
+    p.drawString(20*mm, y + 3*mm, "INCOME — INVOICES")
     p.drawRightString(w - 20*mm, y + 3*mm, "AMOUNT")
-    y -= 2*mm
 
+    row_y = y - 1*mm
     for inv in invoices:
-        y -= 9*mm
-        if y < 60*mm:
+        row_y -= 8*mm
+        if row_y < 60*mm:
             break
-        bg = colors.HexColor('#f9f9f9') if invoices.filter(pk=inv.pk).exists() else colors.white
-        p.setFillColor(colors.HexColor('#f9f9f9'))
-        p.rect(15*mm, y, w - 30*mm, 8*mm, fill=1, stroke=0)
-        p.setFillColor(colors.HexColor('#333'))
-        p.setFont("Helvetica", 9)
-        p.drawString(20*mm, y + 2*mm, f"{inv.client} — {inv.description[:45]}")
-        p.drawRightString(w - 20*mm, y + 2*mm, f"£{inv.amount}")
+        c = colors.HexColor('#f8fafc') if list(invoices).index(inv) % 2 == 0 else colors.white
+        p.setFillColor(c)
+        p.rect(15*mm, row_y, w - 30*mm, 7.5*mm, fill=1, stroke=0)
+        p.setFillColor(colors.HexColor('#334155'))
+        p.setFont("Helvetica", 8.5)
+        p.drawString(20*mm, row_y + 2*mm, f"{inv.client}  —  {inv.description[:50]}")
+        p.setFont("Helvetica-Bold", 8.5)
+        p.drawRightString(w - 20*mm, row_y + 2*mm, f"£{inv.amount}")
 
     # Expense table
-    y -= 15*mm
-    if y > 60*mm:
-        p.setFillColor(colors.HexColor('#1a1a2e'))
-        p.rect(15*mm, y, w - 30*mm, 10*mm, fill=1, stroke=0)
+    row_y -= 12*mm
+    if row_y > 55*mm:
+        p.setFillColor(colors.HexColor('#1e293b'))
+        p.rect(15*mm, row_y, w - 30*mm, 9*mm, fill=1, stroke=0)
         p.setFillColor(colors.white)
-        p.setFont("Helvetica-Bold", 10)
-        p.drawString(20*mm, y + 3*mm, "EXPENSES")
-        p.drawRightString(w - 20*mm, y + 3*mm, "AMOUNT")
-        y -= 2*mm
+        p.setFont("Helvetica-Bold", 8)
+        p.drawString(20*mm, row_y + 3*mm, "EXPENSES")
+        p.drawRightString(w - 20*mm, row_y + 3*mm, "AMOUNT")
 
+        exp_y = row_y - 1*mm
         for exp in expenses:
-            y -= 9*mm
-            if y < 30*mm:
+            exp_y -= 8*mm
+            if exp_y < 25*mm:
                 break
-            p.setFillColor(colors.HexColor('#fff5f5'))
-            p.rect(15*mm, y, w - 30*mm, 8*mm, fill=1, stroke=0)
-            p.setFillColor(colors.HexColor('#333'))
-            p.setFont("Helvetica", 9)
-            p.drawString(20*mm, y + 2*mm, f"{exp.description} — {exp.category}")
-            p.drawRightString(w - 20*mm, y + 2*mm, f"£{exp.amount}")
+            c = colors.HexColor('#fff1f2') if list(expenses).index(exp) % 2 == 0 else colors.white
+            p.setFillColor(c)
+            p.rect(15*mm, exp_y, w - 30*mm, 7.5*mm, fill=1, stroke=0)
+            p.setFillColor(colors.HexColor('#334155'))
+            p.setFont("Helvetica", 8.5)
+            p.drawString(20*mm, exp_y + 2*mm, f"{exp.description}  —  {exp.category}")
+            p.setFont("Helvetica-Bold", 8.5)
+            p.drawRightString(w - 20*mm, exp_y + 2*mm, f"£{exp.amount}")
 
     # Footer
-    p.setFillColor(colors.HexColor('#1a1a2e'))
+    p.setFillColor(colors.HexColor('#f8fafc'))
     p.rect(0, 0, w, 18*mm, fill=1, stroke=0)
-    p.setFillColor(colors.HexColor('#aaa'))
+    p.setStrokeColor(colors.HexColor('#e2e8f0'))
+    p.line(0, 18*mm, w, 18*mm)
+    p.setFillColor(colors.HexColor('#94a3b8'))
     p.setFont("Helvetica", 8)
-    p.drawCentredString(w/2, 8*mm, "Generated by SoleTax · soletax.pythonanywhere.com · HMRC MTD Ready")
+    p.drawCentredString(w/2, 7*mm, "Generated by SoleTax  ·  soletax.pythonanywhere.com  ·  HMRC MTD Ready")
 
     p.showPage()
     p.save()

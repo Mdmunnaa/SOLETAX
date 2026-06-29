@@ -3,88 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SoleTax</title>
+  <title>SoleTax — Tax Tool for UK Freelancers</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    :root {
-      --dark: #1a1a2e;
-      --accent: #4cc9f0;
-      --accent2: #7b2fff;
-    }
-    body { background: #f0f2f8; font-family: 'Segoe UI', sans-serif; }
+    * { box-sizing: border-box; }
+    body { background: #f5f7fa; font-family: 'Segoe UI', system-ui, sans-serif; color: #1e293b; }
 
     /* Navbar */
-    .navbar { background: var(--dark); padding: .8rem 1.5rem; box-shadow: 0 2px 20px rgba(0,0,0,.3); }
-    .navbar-brand { color: #fff !important; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.5px; }
-    .navbar-brand span { color: var(--accent); }
+    .top-nav { background: #fff; border-bottom: 1px solid #e8ecf0; padding: .75rem 1.5rem; position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; align-items: center; gap: 1rem; box-shadow: 0 1px 8px rgba(0,0,0,.06); }
+    .brand { font-weight: 800; font-size: 1.35rem; color: #1e293b; text-decoration: none; }
+    .brand span { color: #3b82f6; }
+    .nav-actions { margin-left: auto; display: flex; gap: .5rem; align-items: center; }
 
     /* Sidebar */
-    .sidebar { background: var(--dark); min-height: 100vh; padding: 1.5rem .75rem; width: 220px; position: fixed; top: 56px; left: 0; }
-    .sidebar .nav-label { font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: .1em; padding: .5rem .75rem; margin-top: .5rem; }
-    .sidebar a { color: #8a8fa8; text-decoration: none; display: flex; align-items: center; gap: 10px; padding: .6rem .75rem; border-radius: 10px; margin-bottom: 2px; font-size: .9rem; transition: all .2s; }
-    .sidebar a:hover, .sidebar a.active { background: rgba(76,201,240,.12); color: var(--accent); }
-    .sidebar a i { font-size: 1rem; width: 20px; }
+    .sidebar { width: 230px; background: #fff; border-right: 1px solid #e8ecf0; position: fixed; top: 57px; bottom: 0; left: 0; padding: 1.25rem .75rem; overflow-y: auto; }
+    .sidebar .sec-label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: .1em; padding: .5rem .75rem; margin-top: .5rem; }
+    .sidebar a { display: flex; align-items: center; gap: 10px; padding: .6rem .85rem; border-radius: 10px; color: #64748b; text-decoration: none; font-size: .88rem; font-weight: 500; margin-bottom: 2px; transition: all .15s; }
+    .sidebar a:hover { background: #eff6ff; color: #3b82f6; }
+    .sidebar a.active { background: #eff6ff; color: #3b82f6; font-weight: 600; }
+    .sidebar a i { font-size: 1rem; }
 
     /* Main */
-    .main-content { margin-left: 220px; padding: 2rem; padding-top: calc(56px + 2rem); min-height: 100vh; }
+    .main-wrap { margin-left: 230px; padding: calc(57px + 1.5rem) 1.5rem 2rem; min-height: 100vh; }
 
     /* Cards */
-    .card { border: none; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,.06); }
-    .card-header-custom { background: linear-gradient(135deg, var(--dark), #16213e); color: white; border-radius: 16px 16px 0 0 !important; padding: 1rem 1.5rem; }
+    .card { border: 1px solid #e8ecf0; border-radius: 14px; box-shadow: 0 1px 6px rgba(0,0,0,.04); background: #fff; }
+    .card-title-bar { padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+    .card-title-bar h6 { margin: 0; font-weight: 600; color: #1e293b; font-size: .95rem; }
 
     /* Stat cards */
-    .stat-card { border-radius: 16px; padding: 1.5rem; color: white; position: relative; overflow: hidden; }
-    .stat-card::after { content: ''; position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,.08); }
-    .stat-card .label { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; opacity: .75; margin-bottom: .4rem; }
-    .stat-card .value { font-size: 1.8rem; font-weight: 700; }
+    .stat-card { border-radius: 14px; padding: 1.4rem 1.5rem; border: 1px solid; }
+    .stat-card .s-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .4rem; }
+    .stat-card .s-value { font-size: 1.9rem; font-weight: 700; line-height: 1; }
+    .stat-income { background: #f0fdf4; border-color: #bbf7d0; }
+    .stat-income .s-label { color: #15803d; }
+    .stat-income .s-value { color: #166534; }
+    .stat-expense { background: #fff1f2; border-color: #fecdd3; }
+    .stat-expense .s-label { color: #be123c; }
+    .stat-expense .s-value { color: #9f1239; }
+    .stat-profit { background: #eff6ff; border-color: #bfdbfe; }
+    .stat-profit .s-label { color: #1d4ed8; }
+    .stat-profit .s-value { color: #1e40af; }
+    .stat-tax { background: #fefce8; border-color: #fde68a; }
+    .stat-tax .s-label { color: #a16207; }
+    .stat-tax .s-value { color: #854d0e; }
 
     /* Badges */
-    .badge-paid { background: #d1fae5; color: #065f46; border-radius: 20px; padding: 4px 12px; font-size: .78rem; font-weight: 600; }
-    .badge-unpaid { background: #fee2e2; color: #991b1b; border-radius: 20px; padding: 4px 12px; font-size: .78rem; font-weight: 600; }
-
-    /* Buttons */
-    .btn-primary { background: var(--dark); border: none; border-radius: 10px; }
-    .btn-primary:hover { background: var(--accent); color: var(--dark) !important; }
-    .btn-accent { background: var(--accent); color: var(--dark); border: none; border-radius: 10px; font-weight: 600; }
-    .btn-accent:hover { background: #3ab8dd; color: var(--dark); }
+    .b-paid { background: #dcfce7; color: #166534; border-radius: 20px; padding: 3px 12px; font-size: .78rem; font-weight: 600; }
+    .b-unpaid { background: #fee2e2; color: #991b1b; border-radius: 20px; padding: 3px 12px; font-size: .78rem; font-weight: 600; }
 
     /* Table */
-    .table th { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: #888; border-bottom: 2px solid #eee; }
-    .table td { vertical-align: middle; font-size: .9rem; }
+    .table th { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #94a3b8; border-bottom: 1px solid #f1f5f9; padding: .75rem 1rem; }
+    .table td { padding: .85rem 1rem; border-bottom: 1px solid #f8fafc; vertical-align: middle; font-size: .9rem; color: #334155; }
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover td { background: #f8fafc; }
 
-    /* Page title */
-    .page-title { font-size: 1.5rem; font-weight: 700; color: var(--dark); margin-bottom: 1.5rem; }
+    /* Buttons */
+    .btn-blue { background: #3b82f6; color: #fff; border: none; border-radius: 9px; font-weight: 500; }
+    .btn-blue:hover { background: #2563eb; color: #fff; }
+    .btn-outline-blue { border: 1.5px solid #3b82f6; color: #3b82f6; border-radius: 9px; font-weight: 500; background: transparent; }
+    .btn-outline-blue:hover { background: #3b82f6; color: #fff; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 3rem 1rem; color: #94a3b8; }
+    .empty-state i { font-size: 2.5rem; display: block; margin-bottom: .75rem; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main-wrap { margin-left: 0; padding: calc(57px + 1rem) 1rem 2rem; }
+      .s-value { font-size: 1.5rem !important; }
+      .mobile-nav { display: flex !important; }
+    }
+    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #e8ecf0; z-index: 998; padding: .5rem 0; }
+    .mobile-nav a { flex: 1; display: flex; flex-direction: column; align-items: center; font-size: .65rem; color: #64748b; text-decoration: none; gap: 2px; padding: .25rem 0; }
+    .mobile-nav a i { font-size: 1.2rem; }
+    .mobile-nav a.active { color: #3b82f6; }
   </style>
 </head>
 <body>
 
-<nav class="navbar fixed-top">
-  <a class="navbar-brand" href="{% url 'index' %}"><i class="bi bi-receipt-cutoff me-2" style="color:var(--accent)"></i>Sole<span>Tax</span></a>
-  <div class="ms-auto d-flex gap-2 align-items-center">
+<!-- Top Nav -->
+<nav class="top-nav">
+  <a href="{% url 'index' %}" class="brand">Sole<span>Tax</span></a>
+  <div class="nav-actions">
     {% if user.is_authenticated %}
-      <span class="text-white-50 small me-1"><i class="bi bi-person-circle me-1"></i>{{ user.username }}</span>
-      <a href="{% url 'create_invoice' %}" class="btn btn-sm btn-outline-light rounded-pill px-3">+ Invoice</a>
-      <a href="{% url 'add_expense' %}" class="btn btn-sm btn-accent rounded-pill px-3">+ Expense</a>
-      <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger rounded-pill px-3">Logout</a>
+      <span class="text-muted small d-none d-md-inline"><i class="bi bi-person-circle me-1"></i>{{ user.username }}</span>
+      <a href="{% url 'create_invoice' %}" class="btn btn-sm btn-outline-blue">+ Invoice</a>
+      <a href="{% url 'add_expense' %}" class="btn btn-sm btn-blue">+ Expense</a>
+      <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger">Logout</a>
     {% else %}
-      <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light rounded-pill px-3">Login</a>
-      <a href="{% url 'signup' %}" class="btn btn-sm btn-accent rounded-pill px-3">Sign Up Free</a>
+      <a href="{% url 'login' %}" class="btn btn-sm btn-outline-blue">Login</a>
+      <a href="{% url 'signup' %}" class="btn btn-sm btn-blue">Sign Up Free</a>
     {% endif %}
   </div>
 </nav>
 
 {% if user.is_authenticated %}
-<div class="sidebar d-none d-md-block">
-  <p class="nav-label">Menu</p>
-  <a href="{% url 'dashboard' %}"><i class="bi bi-speedometer2"></i> Dashboard</a>
-  <a href="{% url 'create_invoice' %}"><i class="bi bi-file-earmark-text"></i> New Invoice</a>
-  <a href="{% url 'add_expense' %}"><i class="bi bi-wallet2"></i> Add Expense</a>
-  <a href="{% url 'tax_report' %}"><i class="bi bi-bar-chart-line"></i> Tax Report</a>
+<!-- Desktop Sidebar -->
+<div class="sidebar">
+  <p class="sec-label">Main</p>
+  <a href="{% url 'dashboard' %}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+  <a href="{% url 'create_invoice' %}"><i class="bi bi-file-earmark-plus"></i> New Invoice</a>
+  <a href="{% url 'add_expense' %}"><i class="bi bi-plus-circle"></i> Add Expense</a>
+  <p class="sec-label">Reports</p>
+  <a href="{% url 'tax_report' %}"><i class="bi bi-bar-chart"></i> Tax Report</a>
 </div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-nav">
+  <a href="{% url 'dashboard' %}"><i class="bi bi-grid-1x2"></i>Home</a>
+  <a href="{% url 'create_invoice' %}"><i class="bi bi-file-earmark-plus"></i>Invoice</a>
+  <a href="{% url 'add_expense' %}"><i class="bi bi-plus-circle"></i>Expense</a>
+  <a href="{% url 'tax_report' %}"><i class="bi bi-bar-chart"></i>Tax</a>
+</nav>
 {% endif %}
 
-<div class="{% if user.is_authenticated %}main-content{% else %}container py-5 mt-5{% endif %}">
+<div class="{% if user.is_authenticated %}main-wrap{% else %}container py-5 mt-4{% endif %}">
   {% block content %}{% endblock %}
 </div>
 
