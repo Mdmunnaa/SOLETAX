@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.conf import settings
+from django.utils import timezone
 import requests
 import urllib.parse
 from reportlab.lib.pagesizes import A4
@@ -150,14 +151,19 @@ def dashboard(request):
 @login_required(login_url='/login/')
 def create_invoice(request):
     if request.method == 'POST':
+        # transaction_date defaults to today but can be backdated by the user —
+        # important for HMRC quarterly tagging since it must reflect when the
+        # income actually occurred, not when it was entered into SoleTax.
+        txn_date = request.POST.get('transaction_date') or timezone.now().date()
         Invoice.objects.create(
             user=request.user,
             client=request.POST['client'],
             description=request.POST['description'],
             amount=request.POST['amount'],
+            transaction_date=txn_date,
         )
         return redirect('dashboard')
-    return render(request, 'core/invoice.html')
+    return render(request, 'core/invoice.html', {'today': timezone.now().date()})
 
 
 @login_required(login_url='/login/')
@@ -219,7 +225,7 @@ def download_invoice_pdf(request, pk):
 
     p.setFillColor(colors.HexColor('#1e293b'))
     p.setFont("Helvetica", 11)
-    p.drawString(15*mm, h - 71*mm, str(invoice.date))
+    p.drawString(15*mm, h - 71*mm, str(invoice.transaction_date))
     status_color = colors.HexColor('#16a34a') if invoice.status == 'Paid' else colors.HexColor('#dc2626')
     p.setFillColor(status_color)
     p.drawString(70*mm, h - 71*mm, invoice.status)
@@ -296,15 +302,17 @@ def download_invoice_pdf(request, pk):
 @login_required(login_url='/login/')
 def add_expense(request):
     if request.method == 'POST':
+        txn_date = request.POST.get('transaction_date') or timezone.now().date()
         Expense.objects.create(
             user=request.user,
             description=request.POST['description'],
             amount=request.POST['amount'],
             category=request.POST['category'],
+            transaction_date=txn_date,
         )
         return redirect('dashboard')
     categories = Expense.CATEGORY_CHOICES
-    return render(request, 'core/expense.html', {'categories': categories})
+    return render(request, 'core/expense.html', {'categories': categories, 'today': timezone.now().date()})
 
 
 @login_required(login_url='/login/')

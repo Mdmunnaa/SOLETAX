@@ -61,7 +61,7 @@
         <tr>
           <td><strong style="color:#0f172a;">{{ inv.client }}</strong></td>
           <td style="color:#64748b;">{{ inv.description }}</td>
-          <td style="color:#94a3b8;font-size:.85rem;">{{ inv.date }}</td>
+          <td style="color:#94a3b8;font-size:.85rem;">{{ inv.transaction_date }}</td>
           <td><strong style="color:#0f172a;">£{{ inv.amount }}</strong></td>
           <td><span class="{% if inv.status == 'Paid' %}b-paid{% else %}b-unpaid{% endif %}">{{ inv.status }}</span></td>
         </tr>
@@ -94,7 +94,7 @@
               {{ exp.category }}
             </span>
           </td>
-          <td style="color:#94a3b8;font-size:.85rem;">{{ exp.date }}</td>
+          <td style="color:#94a3b8;font-size:.85rem;">{{ exp.transaction_date }}</td>
           <td><strong style="color:#0f172a;">£{{ exp.amount }}</strong></td>
         </tr>
         {% endfor %}
