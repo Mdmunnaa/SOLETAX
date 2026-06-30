@@ -116,6 +116,7 @@ img{display:block}
 .hero-inner{position:relative;z-index:2}
 
 /* eyebrow */
+.hero-text-col{text-align:center;margin:0 auto;}
 .eyebrow{
   display:inline-flex;align-items:center;gap:.5rem;
   background:rgba(255,255,255,.06);
@@ -218,6 +219,7 @@ img{display:block}
   background:var(--white);border:1.5px solid var(--line);
   border-radius:20px;padding:2rem;
   transition:all .22s;overflow:hidden;position:relative;
+  text-align:center;display:flex;flex-direction:column;align-items:center;
 }
 .bento-card:hover{box-shadow:0 16px 48px rgba(0,0,0,.1);transform:translateY(-2px)}
 
@@ -270,7 +272,7 @@ img{display:block}
 
 /* mini dashboard inside bento */
 .mini-dash{
-  margin-top:1.25rem;
+  margin-top:1.25rem;width:100%;
   background:rgba(255,255,255,.05);
   border:1px solid rgba(255,255,255,.1);
   border-radius:12px;padding:.85rem;
@@ -337,6 +339,7 @@ img{display:block}
 .testi-card{
   background:var(--white);border:1.5px solid var(--line);
   border-radius:20px;padding:1.75rem;transition:all .2s;
+  text-align:center;
 }
 .testi-card:hover{box-shadow:0 10px 40px rgba(0,0,0,.07);transform:translateY(-2px)}
 .testi-card blockquote{
@@ -348,7 +351,7 @@ img{display:block}
   font-family:'Cabinet Grotesk',sans-serif;font-weight:900;
   display:block;margin-bottom:-.4rem;line-height:1;
 }
-.rev{display:flex;align-items:center;gap:.75rem}
+.rev{display:flex;align-items:center;justify-content:center;gap:.75rem}
 .rev-av{
   width:38px;height:38px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
@@ -369,6 +372,7 @@ img{display:block}
   border-radius:22px;padding:2.5rem;
   background:rgba(255,255,255,.04);
   position:relative;transition:all .2s;
+  text-align:center;
 }
 .price-card:hover{background:rgba(255,255,255,.06)}
 .price-card.hot{
@@ -394,7 +398,7 @@ img{display:block}
 }
 .p-per{font-size:.85rem;color:var(--dim);margin-top:.3rem;margin-bottom:2rem}
 .pf{
-  display:flex;align-items:center;gap:.6rem;
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
   font-size:.85rem;color:rgba(255,255,255,.65);
   margin-bottom:.6rem;
 }
@@ -479,25 +483,46 @@ footer{
   width:24px;height:24px;border-radius:6px;background:var(--lime);
   display:flex;align-items:center;justify-content:center;
 }
-.foot-tag{font-size:.82rem;color:rgba(255,255,255,.2);margin-top:.5rem;line-height:1.6}
+.foot-tag{font-size:.82rem;color:rgba(255,255,255,.45);margin-top:.5rem;line-height:1.6}
 footer h6{
   font-size:.65rem;font-weight:700;text-transform:uppercase;
-  letter-spacing:.13em;color:rgba(255,255,255,.2);margin-bottom:1rem;
+  letter-spacing:.13em;color:rgba(255,255,255,.4);margin-bottom:1rem;
 }
 footer a{
-  color:rgba(255,255,255,.3);font-size:.82rem;
+  color:rgba(255,255,255,.65);font-size:.82rem;
   display:block;margin-bottom:.5rem;transition:color .15s;
 }
-footer a:hover{color:rgba(255,255,255,.75)}
+footer a:hover{color:var(--lime)}
 .foot-socials{display:flex;gap:.75rem;margin-top:1.25rem}
-.foot-socials a{font-size:1rem;display:inline;margin:0;color:rgba(255,255,255,.2)}
+.foot-socials a{font-size:1rem;display:inline;margin:0;color:rgba(255,255,255,.4)}
 .foot-socials a:hover{color:var(--lime)}
-.foot-hr{border-color:rgba(255,255,255,.05);margin:2.5rem 0 1.75rem}
+.foot-hr{border-color:rgba(255,255,255,.1);margin:2.5rem 0 1.75rem}
 .foot-bot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.foot-bot p{font-size:.75rem;color:rgba(255,255,255,.15)}
+.foot-bot p{font-size:.75rem;color:rgba(255,255,255,.35)}
 .foot-links{display:flex;gap:1.25rem}
-.foot-links a{font-size:.75rem;color:rgba(255,255,255,.15);display:inline;margin:0}
-.foot-links a:hover{color:rgba(255,255,255,.5)}
+.foot-links a{font-size:.75rem;color:rgba(255,255,255,.35);display:inline;margin:0}
+.foot-links a:hover{color:rgba(255,255,255,.8)}
+
+/* ===== FOOTER GRID (custom, no Bootstrap dependency) ===== */
+.foot-grid{
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;
+  gap:2rem;
+  text-align:left;
+}
+.foot-col h6{text-align:left;}
+.foot-col a{text-align:left;}
+.foot-brand-col{display:flex;flex-direction:column;align-items:flex-start;text-align:left;}
+.foot-brand-col .foot-brand{justify-content:flex-start;}
+.foot-brand-col .foot-socials{justify-content:flex-start;}
+@media (max-width:768px){
+  .foot-grid{grid-template-columns:repeat(2,1fr);gap:2rem 1.5rem;}
+  .foot-brand-col{grid-column:1 / -1;align-items:center;text-align:center;}
+  .foot-brand-col .foot-brand{justify-content:center;}
+  .foot-brand-col .foot-socials{justify-content:center;}
+  .foot-col{text-align:center;}
+  .foot-col h6, .foot-col a{text-align:center;}
+}
 
 /* ── SECTION LABEL shared ── */
 .s-label{
@@ -520,6 +545,20 @@ footer a:hover{color:rgba(255,255,255,.75)}
 .s-sub{font-size:.95rem;line-height:1.75;max-width:500px}
 .s-sub-dark{color:var(--dim)}
 .s-sub-light{color:var(--dim)}
+
+/* ===== CENTER ALIGN OVERRIDE — applies to all major sections ===== */
+.s-label{justify-content:center;width:100%;}
+.s-h{text-align:center;}
+.s-sub{margin:0 auto;text-align:center;}
+.bento, .proof-section, .pricing-section, .faq-section, .how-it-works, #how, .final-cta {
+  text-align:center;
+}
+.bento .container > .s-label,
+.proof-section .container > .s-label,
+.pricing-section .container > .s-label,
+.faq-section .container > .s-label {
+  display:flex;
+}
 
 /* ── RESPONSIVE ── */
 @media(max-width:991px){
@@ -574,9 +613,9 @@ footer a:hover{color:rgba(255,255,255,.75)}
   <div class="blob blob2"></div>
   <div class="blob blob3"></div>
   <div class="container hero-inner">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-6">
-        <div class="eyebrow">
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="hero-text-col" style="text-align:center;max-width:760px;margin:0 auto;">
+        <div class="eyebrow" style="margin-left:auto;margin-right:auto;">
           <div class="eyebrow-dot"><i class="bi bi-check"></i></div>
           MTD-Ready · UK Sole Traders
         </div>
@@ -585,8 +624,8 @@ footer a:hover{color:rgba(255,255,255,.75)}
           <span class="outline">boring.</span><br>
           <span class="accent">We fixed it.</span>
         </h1>
-        <p class="hero-desc">Invoice clients, track HMRC-approved expenses, and generate your quarterly tax report — all without an accountant, a spreadsheet, or a breakdown.</p>
-        <div class="hero-cta">
+        <p class="hero-desc" style="margin-left:auto;margin-right:auto;">Invoice clients, track HMRC-approved expenses, and generate your quarterly tax report — all without an accountant, a spreadsheet, or a breakdown.</p>
+        <div class="hero-cta" style="justify-content:center;">
           <a href="{% url 'signup' %}" class="cta-primary">
             <i class="bi bi-rocket-takeoff-fill"></i> Start free — no card
           </a>
@@ -594,14 +633,14 @@ footer a:hover{color:rgba(255,255,255,.75)}
             <i class="bi bi-play-circle"></i> See how it works
           </a>
         </div>
-        <p class="hero-fine">
+        <p class="hero-fine" style="justify-content:center;">
           <span>✓</span> Free plan forever &nbsp;·&nbsp;
           <span>✓</span> HMRC MTD compatible &nbsp;·&nbsp;
           <span>✓</span> Cancel anytime
         </p>
       </div>
-      <div class="col-lg-6 hero-mockup-col">
-        <div style="position:relative;padding:24px 24px 8px 8px;">
+      <div class="hero-mockup-col" style="margin-top:2rem;width:100%;max-width:680px;">
+        <div style="position:relative;padding:24px 24px 8px 8px;max-width:600px;margin:0 auto;">
           <!-- floating cards -->
           <div style="position:absolute;top:-16px;right:8px;background:#fff;border-radius:12px;padding:.6rem 1rem;box-shadow:0 12px 40px rgba(0,0,0,.3);display:flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:700;color:#08090a;border:1px solid #e5e7eb;z-index:5;">
             <span style="font-size:1rem;">💸</span> Invoice sent — £3,200
@@ -717,7 +756,7 @@ footer a:hover{color:rgba(255,255,255,.75)}
           <h3>Log it. Claim it.<br>Save it.</h3>
           <p>Every business expense logged against an official HMRC category. No more guessing what's deductible at tax time.</p>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;width:100%;justify-content:center;">
           <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:8px;padding:.3rem .7rem;font-size:.72rem;font-weight:700;">Office costs</span>
           <span style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;border-radius:8px;padding:.3rem .7rem;font-size:.72rem;font-weight:700;">Travel</span>
           <span style="background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe;border-radius:8px;padding:.3rem .7rem;font-size:.72rem;font-weight:700;">Equipment</span>
@@ -855,8 +894,7 @@ footer a:hover{color:rgba(255,255,255,.75)}
   <div class="container">
     <div class="s-label"><span class="s-label-dot"></span> FAQ</div>
     <h2 class="s-h s-h-light">Common questions.</h2>
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-8">
+    <div style="max-width:700px;margin:2.5rem auto 0;">
         <div class="faq-item">
           <div class="faq-q" onclick="faq(this)">What is Making Tax Digital (MTD)?<i class="bi bi-plus faq-icon"></i></div>
           <div class="faq-a">MTD is HMRC's digital record-keeping initiative. From April 2026, UK sole traders earning over £50k/year must submit tax updates quarterly through MTD-compatible software. SoleTax generates those reports automatically.</div>
@@ -877,7 +915,6 @@ footer a:hover{color:rgba(255,255,255,.75)}
           <div class="faq-q" onclick="faq(this)">Does it work for VAT-registered businesses?<i class="bi bi-plus faq-icon"></i></div>
           <div class="faq-a">SoleTax currently targets non-VAT sole traders. VAT support is in development — sign up to be notified when it launches.</div>
         </div>
-      </div>
     </div>
   </div>
 </section>
@@ -898,8 +935,8 @@ footer a:hover{color:rgba(255,255,255,.75)}
 <!-- FOOTER -->
 <footer id="contact">
   <div class="container">
-    <div class="row g-4">
-      <div class="col-md-4">
+    <div class="foot-grid">
+      <div class="foot-brand-col">
         <div class="foot-brand">
           <div class="foot-brand-icon">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#08090a"/></svg>
@@ -913,25 +950,25 @@ footer a:hover{color:rgba(255,255,255,.75)}
           <a href="mailto:hello@soletax.co.uk"><i class="bi bi-envelope-fill"></i></a>
         </div>
       </div>
-      <div class="col-6 col-md-2">
+      <div class="foot-col">
         <h6>Product</h6>
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#how">How it works</a>
         <a href="{% url 'signup' %}">Sign up free</a>
       </div>
-      <div class="col-6 col-md-2">
+      <div class="foot-col">
         <h6>Company</h6>
         <a href="{% url 'about' %}">About</a>
         <a href="{% url 'contact' %}">Contact</a>
       </div>
-      <div class="col-6 col-md-2">
+      <div class="foot-col">
         <h6>Legal</h6>
         <a href="{% url 'terms' %}">Terms</a>
         <a href="{% url 'privacy' %}">Privacy</a>
         <a href="{% url 'refund' %}">Refunds</a>
       </div>
-      <div class="col-6 col-md-2">
+      <div class="foot-col">
         <h6>Support</h6>
         <a href="{% url 'contact' %}">Contact Us</a>
         <a href="#faq">FAQ</a>
