@@ -68,7 +68,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ===== Google OAuth =====
 # Get these from Google Cloud Console > APIs & Services > Credentials
-GOOGLE_OAUTH_CLIENT_ID = 'PASTE_YOUR_CLIENT_ID_HERE.apps.googleusercontent.com'
-GOOGLE_OAUTH_CLIENT_SECRET = 'PASTE_YOUR_CLIENT_SECRET_HERE'
+GOOGLE_OAUTH_CLIENT_ID = '702601609322-jiil29bjq2jbu5300p9doobtu8muedgv.apps.googleusercontent.com'
+GOOGLE_OAUTH_CLIENT_SECRET = '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'
 # This must EXACTLY match the redirect URI you add in Google Cloud Console
 GOOGLE_OAUTH_REDIRECT_URI = 'https://soletax.pythonanywhere.com/auth/google/callback/'
