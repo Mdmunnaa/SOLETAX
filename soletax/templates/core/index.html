@@ -39,6 +39,19 @@ body{
 a{text-decoration:none}
 img{display:block}
 
+/* ===== CONTAINER (custom, replaces missing Bootstrap .container) ===== */
+.container{
+  width:100%;
+  max-width:1140px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:1.25rem;
+  padding-right:1.25rem;
+}
+@media (max-width:768px){
+  .container{padding-left:1rem;padding-right:1rem;}
+}
+
 /* ── NAV ── */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
