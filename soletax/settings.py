@@ -62,5 +62,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'soletax' / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ===== Google OAuth =====
+# Get these from Google Cloud Console > APIs & Services > Credentials
+GOOGLE_OAUTH_CLIENT_ID = 'PASTE_YOUR_CLIENT_ID_HERE.apps.googleusercontent.com'
+GOOGLE_OAUTH_CLIENT_SECRET = 'PASTE_YOUR_CLIENT_SECRET_HERE'
+# This must EXACTLY match the redirect URI you add in Google Cloud Console
+GOOGLE_OAUTH_REDIRECT_URI = 'https://soletax.pythonanywhere.com/auth/google/callback/'

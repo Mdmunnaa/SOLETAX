@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Sum
 from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.conf import settings
+import requests
+import urllib.parse
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.pdfgen import canvas
@@ -43,6 +47,86 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('index')
+
+
+def google_login(request):
+    """Redirect user to Google's OAuth consent screen."""
+    params = {
+        'client_id': settings.GOOGLE_OAUTH_CLIENT_ID,
+        'redirect_uri': settings.GOOGLE_OAUTH_REDIRECT_URI,
+        'response_type': 'code',
+        'scope': 'openid email profile',
+        'access_type': 'online',
+        'prompt': 'select_account',
+    }
+    google_auth_url = 'https://accounts.google.com/o/oauth2/v2/auth?' + urllib.parse.urlencode(params)
+    return redirect(google_auth_url)
+
+
+def google_callback(request):
+    """Handle the redirect back from Google, exchange code for token, log user in."""
+    code = request.GET.get('code')
+    error = request.GET.get('error')
+
+    if error or not code:
+        return render(request, 'core/login.html', {
+            'form': AuthenticationForm(),
+            'google_error': 'Google sign-in was cancelled or failed. Please try again.'
+        })
+
+    # Exchange authorization code for access token
+    token_url = 'https://oauth2.googleapis.com/token'
+    token_data = {
+        'code': code,
+        'client_id': settings.GOOGLE_OAUTH_CLIENT_ID,
+        'client_secret': settings.GOOGLE_OAUTH_CLIENT_SECRET,
+        'redirect_uri': settings.GOOGLE_OAUTH_REDIRECT_URI,
+        'grant_type': 'authorization_code',
+    }
+    token_response = requests.post(token_url, data=token_data, timeout=10)
+
+    if token_response.status_code != 200:
+        return render(request, 'core/login.html', {
+            'form': AuthenticationForm(),
+            'google_error': 'Could not verify your Google account. Please try again.'
+        })
+
+    token_json = token_response.json()
+    access_token = token_json.get('access_token')
+
+    # Fetch user info from Google
+    userinfo_response = requests.get(
+        'https://www.googleapis.com/oauth2/v2/userinfo',
+        headers={'Authorization': f'Bearer {access_token}'},
+        timeout=10
+    )
+    userinfo = userinfo_response.json()
+
+    email = userinfo.get('email')
+    first_name = userinfo.get('given_name', '')
+    last_name = userinfo.get('family_name', '')
+
+    if not email:
+        return render(request, 'core/login.html', {
+            'form': AuthenticationForm(),
+            'google_error': 'Could not get your email from Google. Please try again.'
+        })
+
+    # Find or create the user — username is the email itself
+    user, created = User.objects.get_or_create(
+        username=email,
+        defaults={
+            'email': email,
+            'first_name': first_name,
+            'last_name': last_name,
+        }
+    )
+    if created:
+        user.set_unusable_password()  # they log in via Google only
+        user.save()
+
+    login(request, user)
+    return redirect('dashboard')
 
 
 @login_required(login_url='/login/')
