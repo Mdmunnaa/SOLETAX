@@ -17,8 +17,12 @@ urlpatterns = [
     path('profile/',                            views.profile_view,         name='profile'),
     path('invoice/',                            views.create_invoice,       name='create_invoice'),
     path('invoice/mark-paid/<int:pk>/',         views.mark_paid,            name='mark_paid'),
+    path('invoice/edit/<int:pk>/',              views.edit_invoice,         name='edit_invoice'),
+    path('invoice/delete/<int:pk>/',            views.delete_invoice,       name='delete_invoice'),
     path('invoice/download/<int:pk>/',          views.download_invoice_pdf, name='download_invoice_pdf'),
     path('expense/',                            views.add_expense,          name='add_expense'),
+    path('expense/edit/<int:pk>/',              views.edit_expense,         name='edit_expense'),
+    path('expense/delete/<int:pk>/',            views.delete_expense,       name='delete_expense'),
     path('tax-report/',                         views.tax_report,           name='tax_report'),
     path('tax-report/download/',                views.download_tax_report_pdf, name='download_tax_report_pdf'),
 ]

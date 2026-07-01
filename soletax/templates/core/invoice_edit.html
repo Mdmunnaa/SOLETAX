@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <a href="{% url 'dashboard' %}" class="d-inline-flex align-items-center gap-2 mb-4 text-decoration-none" style="color:#64748b;font-size:.875rem;font-weight:500;">
+      <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+    <div class="card p-4 p-md-5" style="border-radius:20px;">
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <div style="width:46px;height:46px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+          <i class="bi bi-pencil-fill" style="color:#2563eb;font-size:1.2rem;"></i>
+        </div>
+        <div>
+          <h5 style="font-weight:800;margin:0;font-size:1.05rem;letter-spacing:-.02em;">Edit Invoice #{{ invoice.id }}</h5>
+          <p style="color:#94a3b8;font-size:.82rem;margin:0;">{{ invoice.client }}</p>
+        </div>
+      </div>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">Client Name</label>
+          <input type="text" name="client" class="form-control" value="{{ invoice.client }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description of Work</label>
+          <textarea name="description" class="form-control" rows="3" required style="resize:vertical;">{{ invoice.description }}</textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Invoice Date</label>
+          <input type="date" name="transaction_date" class="form-control" value="{{ invoice.transaction_date|date:'Y-m-d' }}" required>
+          <p style="font-size:.78rem;color:#94a3b8;margin-top:.35rem;">Used for HMRC quarterly period tagging.</p>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Amount (£)</label>
+          <div class="input-group">
+            <span class="input-group-text" style="background:#f8faff;border-right:none;font-weight:700;color:#64748b;">£</span>
+            <input type="number" name="amount" class="form-control" value="{{ invoice.amount }}" step="0.01" min="0" required style="border-left:none;border-radius:0 10px 10px 0;">
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-blue px-4">
+            <i class="bi bi-check-lg me-1"></i>Save Changes
+          </button>
+          <a href="{% url 'dashboard' %}" class="btn btn-light px-4" style="border-radius:10px;font-weight:600;">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

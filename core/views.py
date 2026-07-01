@@ -137,6 +137,9 @@ def google_callback(request):
 
 @login_required(login_url='/login/')
 def dashboard(request):
+    from .tax_periods import current_quarter, quarters_for_tax_year
+    from datetime import date
+
     invoices       = Invoice.objects.filter(user=request.user)
     expenses       = Expense.objects.filter(user=request.user)
     total_income   = invoices.aggregate(Sum('amount'))['amount__sum'] or Decimal('0')
@@ -144,13 +147,33 @@ def dashboard(request):
     profit         = total_income - total_expenses
     profile, _     = UserProfile.objects.get_or_create(user=request.user)
 
+    # Quarter summary ─────────────────────────────────────────────
+    today  = date.today()
+    cq     = current_quarter(today)
+
+    # Income & expenses tagged to current quarter only
+    q_invoices = invoices.filter(quarter_key=cq.period_key)
+    q_expenses = expenses.filter(quarter_key=cq.period_key)
+    q_income   = q_invoices.aggregate(Sum('amount'))['amount__sum'] or Decimal('0')
+    q_expense  = q_expenses.aggregate(Sum('amount'))['amount__sum'] or Decimal('0')
+    q_profit   = q_income - q_expense
+
+    days_to_deadline = (cq.deadline - today).days
+
     response = render(request, 'core/dashboard.html', {
-        'invoices':       invoices,
-        'expenses':       expenses,
-        'total_income':   total_income,
-        'total_expenses': total_expenses,
-        'profit':         profit,
-        'profile':        profile,
+        'invoices':            invoices,
+        'expenses':            expenses,
+        'total_income':        total_income,
+        'total_expenses':      total_expenses,
+        'profit':              profit,
+        'profile':             profile,
+        # Quarter context
+        'current_quarter':     cq,
+        'q_income':            q_income,
+        'q_expense':           q_expense,
+        'q_profit':            q_profit,
+        'days_to_deadline':    days_to_deadline,
+        'deadline_urgent':     days_to_deadline <= 14,
     })
 
     # Persist HMRC fraud-prevention device ID as a long-lived cookie.
@@ -208,6 +231,33 @@ def mark_paid(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
     invoice.status = 'Paid'
     invoice.save()
+    return redirect('dashboard')
+
+
+@login_required(login_url='/login/')
+def edit_invoice(request, pk):
+    invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
+    if invoice.is_locked:
+        return redirect('dashboard')  # submitted to HMRC — cannot silently edit
+    if request.method == 'POST':
+        txn_date = request.POST.get('transaction_date') or invoice.transaction_date
+        invoice.client          = request.POST.get('client', invoice.client)
+        invoice.description     = request.POST.get('description', invoice.description)
+        invoice.amount          = request.POST.get('amount', invoice.amount)
+        invoice.transaction_date = txn_date
+        invoice.save()
+        return redirect('dashboard')
+    return render(request, 'core/invoice_edit.html', {
+        'invoice': invoice,
+        'today':   timezone.now().date(),
+    })
+
+
+@login_required(login_url='/login/')
+def delete_invoice(request, pk):
+    invoice = get_object_or_404(Invoice, pk=pk, user=request.user)
+    if request.method == 'POST':
+        invoice.soft_delete()   # HMRC 6-year record retention — never hard delete
     return redirect('dashboard')
 
 
@@ -331,6 +381,34 @@ def add_expense(request):
         return redirect('dashboard')
     categories = Expense.CATEGORY_CHOICES
     return render(request, 'core/expense.html', {'categories': categories, 'today': timezone.now().date()})
+
+
+@login_required(login_url='/login/')
+def edit_expense(request, pk):
+    expense = get_object_or_404(Expense, pk=pk, user=request.user)
+    if expense.is_locked:
+        return redirect('dashboard')
+    if request.method == 'POST':
+        txn_date = request.POST.get('transaction_date') or expense.transaction_date
+        expense.description     = request.POST.get('description', expense.description)
+        expense.amount          = request.POST.get('amount', expense.amount)
+        expense.category        = request.POST.get('category', expense.category)
+        expense.transaction_date = txn_date
+        expense.save()
+        return redirect('dashboard')
+    return render(request, 'core/expense_edit.html', {
+        'expense':    expense,
+        'categories': Expense.CATEGORY_CHOICES,
+        'today':      timezone.now().date(),
+    })
+
+
+@login_required(login_url='/login/')
+def delete_expense(request, pk):
+    expense = get_object_or_404(Expense, pk=pk, user=request.user)
+    if request.method == 'POST':
+        expense.soft_delete()
+    return redirect('dashboard')
 
 
 # ── Tax report ────────────────────────────────────────────────────
