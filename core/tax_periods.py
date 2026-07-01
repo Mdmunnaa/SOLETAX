@@ -13,7 +13,7 @@ code without dragging in the whole app.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 
 
 # Standard quarterly periods within a UK tax year (HMRC default).
@@ -38,11 +38,21 @@ CALENDAR_QUARTERS = [
 STANDARD_DEADLINES = ['08-07', '11-07', '02-07', '05-07']  # MM-DD, year-relative
 
 
-def tax_year_start(for_date: date) -> int:
+def _ensure_date(d: date | str) -> date:
+    """Helper to ensure we always work with a python date object."""
+    if isinstance(d, str):
+        # Frontend ফর্ম থেকে স্ট্রিং আসলে সেটিকে Date অবজেক্টে কনভার্ট করবে
+        return datetime.strptime(d, "%Y-%m-%d").date()
+    return d
+
+
+def tax_year_start(for_date: date | str) -> int:
     """
     Return the starting year of the UK tax year containing `for_date`.
     E.g. 2026-04-06 .. 2027-04-05 is tax year "2026" (commonly written 2026/27).
     """
+    for_date = _ensure_date(for_date)
+    
     if (for_date.month, for_date.day) >= (4, 6):
         return for_date.year
     return for_date.year - 1
@@ -75,12 +85,14 @@ def quarters_for_tax_year(start_year: int, calendar: bool = False) -> list[Quart
     """Build all 4 Quarter objects for a given UK tax year start year."""
     defs = CALENDAR_QUARTERS if calendar else STANDARD_QUARTERS
     quarters = []
+    
     for i, (sm, sd, em, ed) in enumerate(defs, start=1):
         # Period start is always within start_year unless it's before 4 Apr
         period_start_year = start_year if sm >= 4 else start_year + 1
         period_end_year = start_year if em >= sm and sm >= 4 else (
             start_year + 1 if em < sm else start_year
         )
+        
         # Special-case Q3 standard period which crosses into next calendar year
         if not calendar and i == 3:
             period_start_year = start_year
@@ -100,6 +112,7 @@ def quarters_for_tax_year(start_year: int, calendar: bool = False) -> list[Quart
             deadline_str = STANDARD_DEADLINES[i - 1]
             dl_month, dl_day = map(int, deadline_str.split('-'))
             deadline_year = period_end_year if dl_month >= em else period_end_year + 1
+            
             # Quarters ending in Jan/Apr need deadline pushed to next year correctly
             if i in (3, 4):
                 deadline_year = period_end_year + (1 if dl_month < em else 0)
@@ -125,23 +138,31 @@ def quarters_for_tax_year(start_year: int, calendar: bool = False) -> list[Quart
     return quarters
 
 
-def quarter_for_date(d: date, calendar: bool = False) -> Quarter:
+def quarter_for_date(d: date | str, calendar: bool = False) -> Quarter:
     """Find which quarterly period a given date falls into."""
+    d = _ensure_date(d)
     ty_start = tax_year_start(d)
+    
     for q in quarters_for_tax_year(ty_start, calendar=calendar):
         if q.period_start <= d <= q.period_end:
             return q
+            
     # Fallback — shouldn't happen if quarters are built correctly
     raise ValueError(f"Could not resolve quarter for date {d}")
 
 
-def current_quarter(today: date | None = None, calendar: bool = False) -> Quarter:
+def current_quarter(today: date | str | None = None, calendar: bool = False) -> Quarter:
+    if today is not None:
+        today = _ensure_date(today)
     return quarter_for_date(today or date.today(), calendar=calendar)
 
 
-def all_quarters_to_date(start_year: int, today: date | None = None,
+def all_quarters_to_date(start_year: int, today: date | str | None = None,
                           calendar: bool = False) -> list[Quarter]:
     """All quarters in a tax year whose period_end has already passed (or today)."""
+    if today is not None:
+        today = _ensure_date(today)
     today = today or date.today()
+    
     return [q for q in quarters_for_tax_year(start_year, calendar=calendar)
             if q.period_start <= today]
