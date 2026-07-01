@@ -64,9 +64,15 @@ def logout_view(request):
     return redirect('index')
 
 
-# ── Google OAuth ──────────────────────────────────────────────────
+import secrets # একদম ওপরে অন্য import গুলোর সাথে এটি যোগ করুন
+
+# --- Google OAuth Secure Views ---
 
 def google_login(request):
+    # CSRF প্রোটেকশনের জন্য একটি র‍্যান্ডম state টোকেন তৈরি করা হচ্ছে
+    state = secrets.token_urlsafe(32)
+    request.session['oauth_state'] = state
+    
     params = {
         'client_id':     settings.GOOGLE_OAUTH_CLIENT_ID,
         'redirect_uri':  settings.GOOGLE_OAUTH_REDIRECT_URI,
@@ -74,13 +80,23 @@ def google_login(request):
         'scope':         'openid email profile',
         'access_type':   'online',
         'prompt':        'select_account',
+        'state':         state, # State টোকেন গুগলে পাঠানো হচ্ছে
     }
     return redirect('https://accounts.google.com/o/oauth2/v2/auth?' + urllib.parse.urlencode(params))
-
 
 def google_callback(request):
     code  = request.GET.get('code')
     error = request.GET.get('error')
+    returned_state = request.GET.get('state')
+    
+    # সেশন থেকে সেভ করা state বের করে মিলিয়ে দেখা হচ্ছে (CSRF Check)
+    saved_state = request.session.pop('oauth_state', None)
+    if not saved_state or saved_state != returned_state:
+        return render(request, 'core/login.html', {
+            'form': AuthenticationForm(),
+            'google_error': 'Security validation failed (CSRF). Please try logging in again.',
+        })
+
     if error or not code:
         return render(request, 'core/login.html', {
             'form': AuthenticationForm(),
@@ -118,11 +134,15 @@ def google_callback(request):
             'google_error': 'Could not get your email from Google. Please try again.',
         })
 
-    user, created = User.objects.get_or_create(
-        username=email,
-        defaults={'email': email, 'first_name': first_name, 'last_name': last_name},
-    )
-    if created:
+    # ইমেইল ডুপ্লিকেশন বাগ ফিক্স করা হয়েছে
+    user = User.objects.filter(email=email).first()
+    if not user:
+        user = User.objects.create(
+            username=email,
+            email=email,
+            first_name=first_name,
+            last_name=last_name
+        )
         user.set_unusable_password()
         user.save()
         UserProfile.objects.create(user=user, full_name=f"{first_name} {last_name}".strip())
