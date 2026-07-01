@@ -1,0 +1,130 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-9 col-lg-8">
+    <a href="{% url 'dashboard' %}" class="d-inline-flex align-items-center gap-2 mb-4 text-decoration-none" style="color:#64748b;font-size:.875rem;font-weight:500;">
+      <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <div style="width:46px;height:46px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+        <i class="bi bi-person-vcard-fill" style="color:#2563eb;font-size:1.2rem;"></i>
+      </div>
+      <div>
+        <h5 style="font-weight:800;margin:0;font-size:1.05rem;letter-spacing:-.02em;">Your Profile</h5>
+        <p style="color:#94a3b8;font-size:.82rem;margin:0;">Business & tax details — needed for invoices and HMRC MTD reports</p>
+      </div>
+    </div>
+
+    {% if not profile.is_complete %}
+    <div class="card p-3 mb-4" style="border-radius:14px;background:#fffbeb;border:1px solid #fde68a;">
+      <div class="d-flex align-items-start gap-2">
+        <i class="bi bi-exclamation-triangle-fill" style="color:#d97706;font-size:1.1rem;margin-top:2px;"></i>
+        <div>
+          <p style="margin:0;font-weight:700;font-size:.88rem;color:#92400e;">Your profile is incomplete</p>
+          <p style="margin:0;font-size:.82rem;color:#a16207;">Fill in your name, UTR, and address below so your invoices and tax reports are MTD-ready.</p>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="card p-3 mb-4" style="border-radius:14px;background:#f0fdf4;border:1px solid #bbf7d0;">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-check-circle-fill" style="color:#16a34a;font-size:1.1rem;"></i>
+        <p style="margin:0;font-weight:700;font-size:.88rem;color:#166534;">Profile complete — you're MTD-ready.</p>
+      </div>
+    </div>
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <!-- Personal & Business -->
+      <div class="card p-4 mb-3" style="border-radius:16px;">
+        <p style="font-weight:700;font-size:.85rem;color:#1e293b;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.04em;">
+          <i class="bi bi-person-fill me-1" style="color:#3b82f6;"></i> Personal & Business
+        </p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="full_name" class="form-control" value="{{ profile.full_name }}" placeholder="e.g. John Smith" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Business / Trading Name <span class="text-muted fw-normal">(optional)</span></label>
+            <input type="text" name="business_name" class="form-control" value="{{ profile.business_name }}" placeholder="e.g. JS Plumbing Services">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone Number</label>
+            <input type="text" name="phone" class="form-control" value="{{ profile.phone }}" placeholder="07123 456789">
+          </div>
+        </div>
+      </div>
+
+      <!-- HMRC / Tax IDs -->
+      <div class="card p-4 mb-3" style="border-radius:16px;">
+        <p style="font-weight:700;font-size:.85rem;color:#1e293b;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.04em;">
+          <i class="bi bi-bank2 me-1" style="color:#3b82f6;"></i> HMRC Tax Identifiers
+        </p>
+        <p style="font-size:.78rem;color:#94a3b8;margin-bottom:1rem;">These are required for Making Tax Digital (MTD) submissions.</p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">UTR <span class="text-muted fw-normal">(Unique Taxpayer Reference)</span></label>
+            <input type="text" name="utr" class="form-control" value="{{ profile.utr }}" placeholder="1234567890" maxlength="10">
+            <small class="text-muted" style="font-size:.75rem;">10 digits, found on your HMRC self-assessment letters</small>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">National Insurance Number</label>
+            <input type="text" name="ni_number" class="form-control" value="{{ profile.ni_number }}" placeholder="QQ 12 34 56 C" maxlength="13" style="text-transform:uppercase;">
+          </div>
+        </div>
+      </div>
+
+      <!-- VAT -->
+      <div class="card p-4 mb-3" style="border-radius:16px;">
+        <p style="font-weight:700;font-size:.85rem;color:#1e293b;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.04em;">
+          <i class="bi bi-receipt me-1" style="color:#3b82f6;"></i> VAT Status
+        </p>
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input" type="checkbox" role="switch" name="is_vat_registered" id="vatSwitch" {% if profile.is_vat_registered %}checked{% endif %} onchange="document.getElementById('vatNumberWrap').style.display=this.checked?'block':'none'">
+          <label class="form-check-label" for="vatSwitch" style="font-size:.9rem;font-weight:500;">I'm VAT registered</label>
+        </div>
+        <div id="vatNumberWrap" style="display:{% if profile.is_vat_registered %}block{% else %}none{% endif %};">
+          <label class="form-label">VAT Number</label>
+          <input type="text" name="vat_number" class="form-control" value="{{ profile.vat_number }}" placeholder="GB123456789" style="max-width:280px;">
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div class="card p-4 mb-4" style="border-radius:16px;">
+        <p style="font-weight:700;font-size:.85rem;color:#1e293b;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.04em;">
+          <i class="bi bi-geo-alt-fill me-1" style="color:#3b82f6;"></i> Business Address
+        </p>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Address Line 1</label>
+            <input type="text" name="address_line1" class="form-control" value="{{ profile.address_line1 }}" placeholder="House number and street">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Address Line 2 <span class="text-muted fw-normal">(optional)</span></label>
+            <input type="text" name="address_line2" class="form-control" value="{{ profile.address_line2 }}" placeholder="Apartment, suite, etc.">
+          </div>
+          <div class="col-md-7">
+            <label class="form-label">City / Town</label>
+            <input type="text" name="city" class="form-control" value="{{ profile.city }}" placeholder="e.g. Manchester">
+          </div>
+          <div class="col-md-5">
+            <label class="form-label">Postcode</label>
+            <input type="text" name="postcode" class="form-control" value="{{ profile.postcode }}" placeholder="e.g. M1 4WP" style="text-transform:uppercase;">
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-blue px-4">
+          <i class="bi bi-check2-circle me-1"></i>Save Profile
+        </button>
+        <a href="{% url 'dashboard' %}" class="btn btn-light px-4" style="border-radius:10px;font-weight:600;">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

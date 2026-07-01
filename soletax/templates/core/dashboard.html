@@ -3,13 +3,28 @@
 
 <div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
   <div>
-    <h4>Good day, {{ user.username }} 👋</h4>
+    <h4>Good day, {% if profile.full_name %}{{ profile.full_name }}{% else %}{{ user.username }}{% endif %} 👋</h4>
     <p>Here's your financial overview for the current year</p>
   </div>
   <a href="{% url 'create_invoice' %}" class="btn btn-blue px-4 d-none d-md-inline-flex align-items-center gap-2">
     <i class="bi bi-plus-lg"></i> New Invoice
   </a>
 </div>
+
+{% if not profile.is_complete %}
+<div class="d-flex align-items-center justify-content-between gap-3 mb-4 px-3 py-2 rounded-3" style="background:#fffbeb;border:1.5px solid #fde68a;">
+  <div class="d-flex align-items-center gap-2">
+    <i class="bi bi-exclamation-triangle-fill" style="color:#d97706;font-size:1rem;"></i>
+    <div>
+      <p style="margin:0;font-weight:700;font-size:.88rem;color:#92400e;">Complete your profile</p>
+      <p style="margin:0;font-size:.8rem;color:#a16207;">Add your name, UTR, and address so your invoices and HMRC reports are fully ready.</p>
+    </div>
+  </div>
+  <a href="{% url 'profile' %}" class="btn btn-sm" style="background:#d97706;color:#fff;border-radius:8px;font-weight:700;font-size:.8rem;white-space:nowrap;flex-shrink:0;">
+    Complete Profile →
+  </a>
+</div>
+{% endif %}
 
 <!-- Stat Cards -->
 <div class="row g-3 mb-4">

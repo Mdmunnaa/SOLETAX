@@ -410,6 +410,10 @@
   <a href="{% url 'tax_report' %}" {% if request.resolver_match.url_name == 'tax_report' %}class="active"{% endif %}>
     <i class="bi bi-bar-chart-fill"></i> Tax Report
   </a>
+  <p class="sidebar-section-label">Account</p>
+  <a href="{% url 'profile' %}" {% if request.resolver_match.url_name == 'profile' %}class="active"{% endif %}>
+    <i class="bi bi-person-vcard-fill"></i> My Profile
+  </a>
   <div class="sidebar-footer">
     <a href="{% url 'logout' %}" style="color:#4a6080;">
       <i class="bi bi-box-arrow-left"></i> Logout
@@ -423,6 +427,7 @@
   <a href="{% url 'create_invoice' %}" {% if request.resolver_match.url_name == 'create_invoice' %}class="active"{% endif %}><i class="bi bi-file-earmark-plus-fill"></i>Invoice</a>
   <a href="{% url 'add_expense' %}" {% if request.resolver_match.url_name == 'add_expense' %}class="active"{% endif %}><i class="bi bi-plus-circle-fill"></i>Expense</a>
   <a href="{% url 'tax_report' %}" {% if request.resolver_match.url_name == 'tax_report' %}class="active"{% endif %}><i class="bi bi-bar-chart-fill"></i>Tax</a>
+  <a href="{% url 'profile' %}" {% if request.resolver_match.url_name == 'profile' %}class="active"{% endif %}><i class="bi bi-person-vcard-fill"></i>Profile</a>
 </nav>
 {% endif %}
 
